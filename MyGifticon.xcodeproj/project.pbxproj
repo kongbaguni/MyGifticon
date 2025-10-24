@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1B040AFC2EAAFEE200B95661 /* KongUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B040AFB2EAAFEE200B95661 /* KongUIKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		1B1CE1EF2E5498FD00E3FB2F /* MyGifticon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyGifticon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B040AFC2EAAFEE200B95661 /* KongUIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = MyGifticon;
 			packageProductDependencies = (
+				1B040AFB2EAAFEE200B95661 /* KongUIKit */,
 			);
 			productName = MyGifticon;
 			productReference = 1B1CE1EF2E5498FD00E3FB2F /* MyGifticon.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 1B1CE1E62E5498FD00E3FB2F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1B040AFA2EAAFEE200B95661 /* XCRemoteSwiftPackageReference "KongUIKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1B1CE1F02E5498FD00E3FB2F /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1B040AFA2EAAFEE200B95661 /* XCRemoteSwiftPackageReference "KongUIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:kongbaguni/KongUIKit.git";
+			requirement = {
+				branch = dev;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1B040AFB2EAAFEE200B95661 /* KongUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B040AFA2EAAFEE200B95661 /* XCRemoteSwiftPackageReference "KongUIKit" */;
+			productName = KongUIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1B1CE1E72E5498FD00E3FB2F /* Project object */;
 }

@@ -1,0 +1,15 @@
+{
+  "originHash" : "2e23f64f8183c0233531e8421d699d161c991edb0110f4b15079f84c4d5bdc01",
+  "pins" : [
+    {
+      "identity" : "konguikit",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:kongbaguni/KongUIKit.git",
+      "state" : {
+        "branch" : "dev",
+        "revision" : "f2e921e9684de31f4d8cf10dbd785ad0c3e854c9"
+      }
+    }
+  ],
+  "version" : 3
+}
