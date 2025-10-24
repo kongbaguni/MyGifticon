@@ -99,7 +99,7 @@ extension UIImage {
                 return
             }
             
-            completion(.init(title: text, barcode: barcode, limitDate: limitdate ))
+            completion(.init(title: text, barcode: barcode, limitDate: limitdate, image: self))
         }
 
         performBarcodeDetection { txt  in
@@ -111,7 +111,6 @@ extension UIImage {
             text = txt
             process()
         }
-        
         
     }
 }

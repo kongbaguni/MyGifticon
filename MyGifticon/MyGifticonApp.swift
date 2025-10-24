@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct MyGifticonApp: App {
@@ -13,5 +14,7 @@ struct MyGifticonApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [GifticonModel.self])
+        
     }
 }

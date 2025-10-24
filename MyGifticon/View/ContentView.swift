@@ -11,59 +11,41 @@ import KongUIKit
 
 struct ContentView: View {
     @State private var clipboardImage: UIImage?
-    @State private var recognizedText: String = ""
-    @State private var barcodeString: String = ""
-    @State private var limitDate: String = ""
+    @State private var newGifticonModel: GifticonModel? = nil {
+        didSet {
+            if newGifticonModel != nil {
+                isSheetPresented = true
+            }
+        }
+    }
+    
+    @State private var isSheetPresented: Bool = false
     var body: some View {
-        VStack(spacing: 20) {
-            if let image = clipboardImage {
-                KImageButton(image: .init(uiImage: image)) {
-                    
+        NavigationStack {
+            VStack {
+                Button("클립보드에서 이미지 가져오기") {
+                    loadClipboardImage()
                 }
-                .frame(height: 300)
-            } else {
-                Text("클립보드에 이미지 없음")
-                    .foregroundColor(.gray)
-            }
-            
-            Button("클립보드에서 이미지 가져오기") {
-                loadClipboardImage()
-            }
-            
-            Button(action: {}) {
-                Image(systemName: "circle.fill")
-                    .font(.system(size: 24))
-            }
-            
-            Button("OCR & QR/바코드 인식") {
-                if let image = clipboardImage {
-                    image.getGifticon { data in
-                        barcodeString = data?.barcode ?? ""
-                        recognizedText = data?.title ?? ""
-                        limitDate = data?.limitDate ?? ""
-                    }
+                List {
+                    GifticonListView()
                 }
             }
-            
-            VStack(alignment: .leading, spacing: 5) {
-                Text("OCR 추출 텍스트:")
-                    .bold()
-                    .foregroundStyle(.secondary)
-                Text(recognizedText)
-            
-                Text("유효기간")
-                    .bold()
-                    .foregroundStyle(.secondary)
-                Text(limitDate)
-                
-                Text("바코드/QR코드 문자열:")
-                    .bold()
-                    .foregroundStyle(.secondary)
-                Text(barcodeString)
-            }
-            .padding()
         }
         .padding()
+        .onChange(of: clipboardImage) { oldValue, newValue in
+            if let image = clipboardImage {
+                image.getGifticon { data in
+                    newGifticonModel = data
+                }
+            }
+        }
+        .sheet(isPresented: $isSheetPresented) {
+            if let model = newGifticonModel {
+                GifticonView(model: model, isNew: true)
+            } else {
+                Text("??")
+            }
+        }
     }
     
     // MARK: - 클립보드 이미지 가져오기
