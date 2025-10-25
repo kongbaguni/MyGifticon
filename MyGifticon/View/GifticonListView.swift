@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import KongUIKit
 
 struct GifticonListView: View {
     @Query private var list: [GifticonModel]
@@ -16,7 +17,19 @@ struct GifticonListView: View {
             NavigationLink {
                 GifticonView(model: model, isNew: false)
             } label: {
-                Text(model.limitDateYMD)
+                HStack {
+                    Text(model.memo)
+                        .font(.title)
+                    Spacer()
+                    Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    Text(model.limitDateYMD)
+                        .foregroundStyle(model.isLimitOver ? .red : .primary)
+                        .font(.caption)
+                    
+                }
             }
         }
     }

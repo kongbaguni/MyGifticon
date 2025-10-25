@@ -23,15 +23,31 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Button("클립보드에서 이미지 가져오기") {
+                Button("Import image from clipboard") {
                     loadClipboardImage()
                 }
                 List {
                     GifticonListView()
                 }
             }
+            .navigationTitle(Text("home"))
+            .navigationBarTitleDisplayMode(.inline)
+            .onDrop(of: [.image], isTargeted: nil, perform: { providers in
+                if let provider = providers.first {
+                    _ = provider.loadObject(ofClass: UIImage.self) { object, _ in
+                        if let image = object as? UIImage {
+                            DispatchQueue.main.async {
+                                self.clipboardImage = image
+                            }
+                        }
+                    }
+                    return true
+                }
+                return false
+            })
         }
         .padding()
+       
         .onChange(of: clipboardImage) { oldValue, newValue in
             if let image = clipboardImage {
                 image.getGifticon { data in
@@ -46,6 +62,8 @@ struct ContentView: View {
                 Text("??")
             }
         }
+        
+        
     }
     
     // MARK: - 클립보드 이미지 가져오기

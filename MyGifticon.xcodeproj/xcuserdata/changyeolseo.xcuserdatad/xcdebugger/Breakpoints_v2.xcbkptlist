@@ -3,4 +3,52 @@
    uuid = "F288D6B3-9AA3-40E8-AD3B-779F8112C497"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B37B571D-13CF-493B-8713-73F5B87E1C65"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyGifticon/View/ContentView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "B37B571D-13CF-493B-8713-73F5B87E1C65 - 10d1cdb672050e41"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Array&lt;__C.NSItemProvider&gt;) -&gt; Swift.Bool in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onDrop(of: Swift.Array&lt;UniformTypeIdentifiers.UTType&gt;, isTargeted: Swift.Optional&lt;SwiftUI.Binding&lt;Swift.Bool&gt;&gt;, perform: (Swift.Array&lt;__C.NSItemProvider&gt;) -&gt; Swift.Bool) -&gt; some&gt;&gt;.0 in MyGifticon.ContentView.body.getter : some"
+                  moduleName = "MyGifticon.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/changyeolseo/Documents/iOS/APP/MyGifticon/MyGifticon/View/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36">
+               </Location>
+               <Location
+                  uuid = "B37B571D-13CF-493B-8713-73F5B87E1C65 - ab3a709641441db3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;__C.NSItemProviderReading&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #2 (Swift.Array&lt;__C.NSItemProvider&gt;) -&gt; Swift.Bool in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onDrop(of: Swift.Array&lt;UniformTypeIdentifiers.UTType&gt;, isTargeted: Swift.Optional&lt;SwiftUI.Binding&lt;Swift.Bool&gt;&gt;, perform: (Swift.Array&lt;__C.NSItemProvider&gt;) -&gt; Swift.Bool) -&gt; some&gt;&gt;.0 in MyGifticon.ContentView.body.getter : some"
+                  moduleName = "MyGifticon.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/changyeolseo/Documents/iOS/APP/MyGifticon/MyGifticon/View/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -28,11 +28,25 @@ fileprivate extension String {
     }
 }
 
+fileprivate extension Date {
+    var daysUntilNow:Int {
+        let calendar = Calendar.current
+        let startOfToday = calendar.startOfDay(for: Date())
+        let startOfTarget = calendar.startOfDay(for: self)
+        
+        if let diff = calendar.dateComponents([.day], from: startOfToday, to: startOfTarget).day {
+            return max(diff, 0) // 과거 날짜면 0 반환
+        } else {
+            return 0
+        }
+    }
+}
 
 @Model
 final class GifticonModel {
     // Persisted properties
     var title: String
+    var memo: String
     var barcode: String
     var limitDateYMD: String
     var imageData: Data
@@ -52,6 +66,22 @@ final class GifticonModel {
         }
     }
     
+    @Transient
+    var isLimitOver: Bool {
+        if let limitDate = limitDate {
+            return Date() > limitDate
+        }
+        return false
+    }
+    
+    @Transient
+    var daysUntilLimit: Int {
+        if let limitDate = limitDate {
+            return limitDate.daysUntilNow
+        }
+        return 0
+    }
+    
     // Required initializer for @Model types
     init(title: String, barcode: String, limitDate: String, image: UIImage) {
         self.title = title
@@ -59,5 +89,6 @@ final class GifticonModel {
         self.limitDateYMD = limitDate
         self.imageData = image.pngData() ?? Data()
         self.createdAt = Date()
+        self.memo = ""
     }
 }
