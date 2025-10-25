@@ -19,19 +19,24 @@ struct GifticonView : View {
     
     var body: some View {
         VStack {
-            NavigationLink {
-                Image(uiImage: model.image)
-                    .resizable()
-                    .scaledToFit()
-                    .navigationTitle("Gifticon Image")
-            } label: {
-                KBarcodeView(text: model.barcode, conerRadius: 20)
-                    .padding(10)
-                
-            }
-            Text(model.barcode)
-                .font(.subheadline)
+            KBarcodeView(text: model.barcode, conerRadius: 20)
+                .padding(10)
 
+            HStack {
+                Text(model.barcode)
+                    .font(.subheadline)
+                
+                NavigationLink {
+                    Image(uiImage: model.image)
+                        .resizable()
+                        .scaledToFit()
+                        .navigationTitle("Gifticon Image")
+                } label: {
+                    Image(systemName: "text.rectangle.page")
+                }
+            }
+            
+ 
             HStack {
                 VStack (alignment: .leading) {
 
@@ -39,7 +44,10 @@ struct GifticonView : View {
                         Text("memo")
                     }.textFieldStyle(.roundedBorder)
                     
-                    KTextScrollView(string: model.title)
+                    KTextScrollView(string: model.title, style:
+                            .init(backgroundColor: .secondary.opacity(0.3),
+                                  foregroundColor: .primary,
+                                  cornerRadius: 5))
                     
                     HStack {
                         Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
@@ -90,7 +98,7 @@ struct GifticonView : View {
         }
         .background {
             RoundedRectangle(cornerRadius: 30)
-                .fill(.orange)
+                .fill(Color.background)
         }
         .navigationTitle(Text("Gifticon"))
         .padding()

@@ -30,7 +30,7 @@ struct ContentView: View {
                     GifticonListView()
                 }
             }
-            .navigationTitle(Text("home"))
+            .navigationTitle(Text("MyGifticon"))
             .navigationBarTitleDisplayMode(.inline)
             .onDrop(of: [.image], isTargeted: nil, perform: { providers in
                 if let provider = providers.first {
