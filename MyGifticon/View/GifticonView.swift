@@ -19,42 +19,38 @@ struct GifticonView : View {
     
     var body: some View {
         VStack {
-            if model.isLimitOver {
+            NavigationLink {
+                Image(uiImage: model.image)
+                    .resizable()
+                    .scaledToFit()
+                    .navigationTitle("Gifticon Image")
+            } label: {
                 KBarcodeView(text: model.barcode, conerRadius: 20)
                     .padding(10)
-                    .opacity(0.3)
-
-            } else {
-                NavigationLink {
-                    Image(uiImage: model.image)
-                        .resizable()
-                        .scaledToFit()
-                        .navigationTitle("Gifticon Image")
-                } label: {
-                    KBarcodeView(text: model.barcode, conerRadius: 20)
-                        .padding(10)
-
-                }
+                
             }
+            Text(model.barcode)
+                .font(.subheadline)
+
             HStack {
                 VStack (alignment: .leading) {
+
                     TextField(text: $memo) {
                         Text("memo")
                     }.textFieldStyle(.roundedBorder)
                     
-                    Text(model.barcode)
-                        .font(.title)
+                    KTextScrollView(string: model.title)
                     
-                    Text(model.title)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    
-                    
-                    Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
-                        .foregroundStyle(model.isLimitOver ? .red : .primary)
-                    
-                    if model.isLimitOver {
-                        Text("Limit over")
+                    HStack {
+                        Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
+                            .foregroundStyle(model.isLimitOver ? .red : .primary)
+                        Spacer()
+                        if model.isLimitOver {
+                            Text("Limit over")
+                        }
+                        else {
+                            Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
+                        }
                     }
                 }
                 Spacer()
