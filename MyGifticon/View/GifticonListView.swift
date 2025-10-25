@@ -10,7 +10,8 @@ import SwiftData
 import KongUIKit
 
 struct GifticonListView: View {
-    @Query private var list: [GifticonModel]
+    @Query(sort: \GifticonModel.limitDateYMD, order: .reverse)
+    private var list: [GifticonModel]
     
     var body: some View {
         ForEach(list) { model in
