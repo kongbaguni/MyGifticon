@@ -17,6 +17,17 @@ struct ContentView: View {
     
     @State private var isSheetPresented: Bool = false
     @State private var isLoading: Bool = false
+    
+    @State private var error:Error? = nil {
+        didSet {
+            Task {
+                if error != nil {
+                    isAlert = true
+                }
+            }
+        }
+    }
+    @State private var isAlert:Bool = false
     var body: some View {
         NavigationStack {
             VStack {
@@ -74,9 +85,12 @@ struct ContentView: View {
             Task {
                 if let image = clipboardImage {
                     isLoading = true
-                    image.getGifticon { data in
+                    image.getGifticon { data, error in
                         newGifticonModel = data
                         isLoading = false
+                        if error != nil {
+                            self.error = error
+                        }
                     }
                 }
             }
@@ -106,6 +120,9 @@ struct ContentView: View {
             } else {
                 Text("??")
             }
+        }
+        .alert(isPresented: $isAlert) {
+            return .init(title: .init("alert"), message: .init(error?.localizedDescription ?? ""))
         }
         
         

@@ -1,7 +1,8 @@
 //
-//  OCRManager.swift
+//  Gifticon.swift
 //  MyGifticon
 //
+//  이미지에서 GifticonModel 추출
 //  Created by Changyeol Seo on 8/19/25.
 //
 import Vision
