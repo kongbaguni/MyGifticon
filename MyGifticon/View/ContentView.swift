@@ -20,28 +20,36 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                GifticonListView()
+                
                 if isLoading {
                     Text("Loading...")
-                    
                 } else {
-                    Button("Import image from clipboard") {
-                        loadClipboardImage()
-                    }
-                    
-                    PhotosPicker(
-                        selection: $photoPickerItem,
-                        matching: .images,
-                        photoLibrary: .shared()) {
-                            Label("사진 선택", systemImage: "photo")
+                    HStack {
+                        Button {
+                            loadClipboardImage()
+                        } label: {
+                            Label("Import image from clipboard", systemImage: "document.on.clipboard.fill")
                                 .font(.headline)
                                 .padding()
                                 .background(Color.blue)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
-                }
-                List {
-                    GifticonListView()
+                        
+                        
+                        PhotosPicker(
+                            selection: $photoPickerItem,
+                            matching: .images,
+                            photoLibrary: .shared()) {
+                                Label("Select from photo library", systemImage: "photo")
+                                    .font(.headline)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                    }
                 }
             }
             .navigationTitle(Text("MyGifticon"))

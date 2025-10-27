@@ -14,22 +14,28 @@ struct GifticonListView: View {
     private var list: [GifticonModel]
     
     var body: some View {
-        ForEach(list) { model in
-            NavigationLink {
-                GifticonView(model: model, isNew: false)
-            } label: {
-                HStack {
-                    Text(model.memo)
-                        .font(.title)
-                    Spacer()
-                    Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    
-                    Text(model.limitDateYMD)
-                        .foregroundStyle(model.isLimitOver ? .red : .primary)
-                        .font(.caption)
-                    
+        if list.isEmpty {
+            HomePlaceHolderView()
+        } else {
+            List {
+                ForEach(list) { model in
+                    NavigationLink {
+                        GifticonView(model: model, isNew: false)
+                    } label: {
+                        HStack {
+                            Text(model.memo)
+                                .font(.title)
+                            Spacer()
+                            Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            
+                            Text(model.limitDateYMD)
+                                .foregroundStyle(model.isLimitOver ? .red : .primary)
+                                .font(.caption)
+                            
+                        }
+                    }
                 }
             }
         }
