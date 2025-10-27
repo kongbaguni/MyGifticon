@@ -24,6 +24,17 @@ fileprivate extension String {
     }
 }
 
+enum GifticonError : LocalizedError {
+    case notGifticonImage
+    var errorDescription: String? {
+        switch self {
+        case .notGifticonImage:
+            return NSLocalizedString("notGifticonImage", comment: "error msg")
+        }
+    }
+}
+
+
 extension UIImage {
     // MARK: - OCR 수행
     fileprivate func performOCR(completion: @escaping (String?) -> Void) {
@@ -88,26 +99,31 @@ extension UIImage {
         }
     }
     
-    func getGifticon(completion:@escaping (GifticonModel?) -> Void) {
+    func getGifticon(completion:@escaping (GifticonModel?, GifticonError?) -> Void) {
         var barcode:String? = nil
         var text:String? = nil
+        var refCount = 2
         func process() {
             guard let barcode = barcode,
                   let text = text,
                   let limitdate = text.extractDates.last
             else {
+                if refCount == 0 {
+                    completion(nil, .notGifticonImage)
+                }
                 return
             }
             
-            completion(.init(title: text, barcode: barcode, limitDate: limitdate, image: self))
+            completion(.init(title: text, barcode: barcode, limitDate: limitdate, image: self), nil)
         }
 
         performBarcodeDetection { txt  in
             barcode = txt
+            refCount -= 1
             process()
         }
-        
         performOCR { txt in
+            refCount -= 1
             text = txt
             process()
         }
