@@ -92,7 +92,9 @@ struct ContentView: View {
         })
         .sheet(isPresented: $isSheetPresented) {
             if let model = newGifticonModel {
-                GifticonView(model: model, isNew: true)
+                NavigationStack {
+                    GifticonView(model: model, isNew: true)
+                }.navigationBarTitleDisplayMode(.inline)
             } else {
                 Text("??")
             }
