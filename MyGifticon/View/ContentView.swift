@@ -8,23 +8,37 @@
 import SwiftUI
 import UIKit
 import KongUIKit
+import PhotosUI
 
 struct ContentView: View {
     @State private var clipboardImage: UIImage?
-    @State private var newGifticonModel: GifticonModel? = nil {
-        didSet {
-            if newGifticonModel != nil {
-                isSheetPresented = true
-            }
-        }
-    }
+    @State private var photoPickerItem: PhotosPickerItem? = nil
+    @State private var newGifticonModel: GifticonModel? = nil
     
     @State private var isSheetPresented: Bool = false
+    @State private var isLoading: Bool = false
     var body: some View {
         NavigationStack {
             VStack {
-                Button("Import image from clipboard") {
-                    loadClipboardImage()
+                if isLoading {
+                    Text("Loading...")
+                    
+                } else {
+                    Button("Import image from clipboard") {
+                        loadClipboardImage()
+                    }
+                    
+                    PhotosPicker(
+                        selection: $photoPickerItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            Label("사진 선택", systemImage: "photo")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
                 }
                 List {
                     GifticonListView()
@@ -49,12 +63,33 @@ struct ContentView: View {
         .padding()
        
         .onChange(of: clipboardImage) { oldValue, newValue in
-            if let image = clipboardImage {
-                image.getGifticon { data in
-                    newGifticonModel = data
+            Task {
+                if let image = clipboardImage {
+                    isLoading = true
+                    image.getGifticon { data in
+                        newGifticonModel = data
+                        isLoading = false
+                    }
                 }
             }
         }
+        .onChange(of: photoPickerItem, { oldValue, newValue in
+            Task {
+                if let data = try? await photoPickerItem?.loadTransferable(type: Data.self) {
+                    let uiImage = UIImage(data: data)
+                    self.clipboardImage = uiImage
+                    photoPickerItem = nil
+                }
+            }
+                
+        })
+        .onChange(of: newGifticonModel, { oldValue, newValue in
+            Task {
+                if newValue != nil {
+                    isSheetPresented = true
+                }
+            }
+        })
         .sheet(isPresented: $isSheetPresented) {
             if let model = newGifticonModel {
                 GifticonView(model: model, isNew: true)
