@@ -16,6 +16,8 @@ struct GifticonView : View {
     let model: GifticonModel
     let isNew:Bool
     @State var memo:String = ""
+    @State var tagItem: KSelectView.Item? = nil
+    @State var willDelete:Bool = false
     
     var body: some View {
         VStack {
@@ -43,6 +45,8 @@ struct GifticonView : View {
                     TextField(text: $memo) {
                         Text("memo")
                     }.textFieldStyle(.roundedBorder)
+                    
+                    KSelectView(items: GifticonModel.tags, selected: $tagItem)
                     
                     KTextScrollView(string: model.title, style:
                             .init(backgroundColor: .secondary.opacity(0.3),
@@ -80,21 +84,13 @@ struct GifticonView : View {
                     }
                 } else {
                     KImageButton(image: .init(systemName: "trash"), style: .simple) {
-                        do {
-                            modelContext.delete(model)
-                            try modelContext.save()
-                            dismiss()
-                        } catch {
-                            // Handle save error (you might want to surface this to the UI)
-                            print("Failed to save model: \(error)")
-                        }
+                        willDelete = true
+                        dismiss()
                     }
                 }
             }
             .frame(width: 50)
             .padding(10)
-            
-
         }
         .background {
             RoundedRectangle(cornerRadius: 30)
@@ -104,23 +100,21 @@ struct GifticonView : View {
         .padding()
         .onAppear {
             memo = model.memo
+            tagItem = model.tagItem
         }
         .onDisappear {
             do {
                 model.memo = memo
+                model.tag = tagItem?.id ?? 0
+                if willDelete {
+                    model.deleted = true
+                }
                 try modelContext.save()
             } catch {
                 print("Failed to save model: \(error)")
             }
         }
-//        .onChange(of: memo) { oldValue, newValue in
-//            do {
-//                model.memo = newValue
-//                try modelContext.save()
-//            } catch {
-//                print("Failed to save model: \(error)")
-//            }
-//        }
+
     }
 }
 

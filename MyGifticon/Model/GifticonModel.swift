@@ -5,7 +5,10 @@
 //  Created by Changyeol Seo on 8/19/25.
 //
 import UIKit
+import SwiftUI
 import SwiftData
+import KongUIKit
+
 fileprivate extension String {
     var dateValue:Date? {
         // 1. DateFormatter 설정
@@ -44,15 +47,24 @@ fileprivate extension Date {
 
 @Model
 final class GifticonModel {
-    // Persisted properties
-    var title: String
-    var memo: String
-    var barcode: String
-    var limitDateYMD: String
-    var imageData: Data
-    var createdAt: Date
+    static let tags : [KSelectView.Item] = [
+        .init(id: 0, color: .red),
+        .init(id: 1, color: .orange),
+        .init(id: 2, color: .yellow),
+        .init(id: 3, color: .green),
+        .init(id: 4, color: .blue),
+        .init(id: 5, color: .purple)
+    ]
 
-    // Transient convenience accessor for UIImage
+    var title: String = ""
+    var memo: String = ""
+    var barcode: String = ""
+    var limitDateYMD: String = ""
+    var imageData: Data 
+    var createdAt: Date
+    var deleted: Bool = false
+    var tag: Int = 0
+    
     @Transient
     var image: UIImage {
         get { UIImage(data: imageData) ?? UIImage() }
@@ -82,6 +94,13 @@ final class GifticonModel {
         return 0
     }
     
+    @Transient
+    var tagItem: KSelectView.Item {
+        get {
+            GifticonModel.tags[self.tag]
+        }
+    }
+    
     // Required initializer for @Model types
     init(title: String, barcode: String, limitDate: String, image: UIImage) {
         self.title = title
@@ -90,5 +109,27 @@ final class GifticonModel {
         self.imageData = image.pngData() ?? Data()
         self.createdAt = Date()
         self.memo = ""
+        self.deleted = false
+        self.tag = 0
+    }
+    
+}
+
+
+
+extension GifticonModel {
+    /** deleted 마크 된 기프티콘 일괄 삭제*/
+    static func deleteMarkedGifticons(context: ModelContext) throws {
+        let descriptor = FetchDescriptor<GifticonModel>(
+            predicate: #Predicate { $0.deleted == true }
+        )
+
+        let markedGifticons = try context.fetch(descriptor)
+
+        for gifticon in markedGifticons {
+            context.delete(gifticon)
+        }
+
+        try context.save()
     }
 }

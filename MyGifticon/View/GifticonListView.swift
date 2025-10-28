@@ -10,32 +10,33 @@ import SwiftData
 import KongUIKit
 
 struct GifticonListView: View {
-    @Query(sort: \GifticonModel.limitDateYMD, order: .reverse)
+    @Environment(\.modelContext) private var modelContext
+
+    @Query(
+        filter: #Predicate<GifticonModel> { $0.deleted == false },
+        sort: [SortDescriptor(\.limitDateYMD, order: .reverse)]
+    )
     private var list: [GifticonModel]
     
     var body: some View {
-        if list.isEmpty {
-            HomePlaceHolderView()
-        } else {
-            List {
-                ForEach(list) { model in
-                    NavigationLink {
-                        GifticonView(model: model, isNew: false)
-                    } label: {
-                        HStack {
-                            Text(model.memo)
-                                .font(.title)
-                            Spacer()
-                            Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            
-                            Text(model.limitDateYMD)
-                                .foregroundStyle(model.isLimitOver ? .red : .primary)
-                                .font(.caption)
-                            
-                        }
-                    }
+        
+        ForEach(list) { model in
+            NavigationLink {
+                GifticonView(model: model, isNew: false)
+            } label: {
+                HStack {
+                    Circle().fill(model.tagItem.color).frame(width: 20)
+                    Text(model.memo)
+                        .font(.title)
+                    Spacer()
+                    Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    Text(model.limitDateYMD)
+                        .foregroundStyle(model.isLimitOver ? .red : .primary)
+                        .font(.caption)
+                    
                 }
             }
         }

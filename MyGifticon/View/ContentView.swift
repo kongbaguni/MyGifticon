@@ -9,8 +9,12 @@ import SwiftUI
 import UIKit
 import KongUIKit
 import PhotosUI
+import SwiftData
 
 struct ContentView: View {
+    @Query(sort: \GifticonModel.createdAt, order: .reverse)
+    private var gifticons: [GifticonModel]
+    
     @State private var clipboardImage: UIImage?
     @State private var photoPickerItem: PhotosPickerItem? = nil
     @State private var newGifticonModel: GifticonModel? = nil
@@ -31,8 +35,16 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                GifticonListView()
-                
+                if gifticons.count == 0 {
+                    HomePlaceHolderView()
+                } else {
+                    List {
+                        Section {
+                            GifticonListView()
+                        }
+                        DeletedGifticonListView()
+                    }
+                }
                 if isLoading {
                     Text("Loading...")
                 } else {
@@ -41,20 +53,19 @@ struct ContentView: View {
                             loadClipboardImage()
                         } label: {
                             Label("Import image from clipboard", systemImage: "document.on.clipboard.fill")
-                                .font(.headline)
+                                .font(.subheadline)
                                 .padding()
                                 .background(Color.blue)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
                         
-                        
                         PhotosPicker(
                             selection: $photoPickerItem,
                             matching: .images,
                             photoLibrary: .shared()) {
                                 Label("Select from photo library", systemImage: "photo")
-                                    .font(.headline)
+                                    .font(.subheadline)
                                     .padding()
                                     .background(Color.blue)
                                     .foregroundColor(.white)
