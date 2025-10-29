@@ -9,8 +9,7 @@ import Vision
 import UIKit
 
 fileprivate extension String {
-    var extractDates:[String] {
-        let pattern = #"\b\d{4}\.\d{2}\.\d{2}\b"#
+    func getMatches(for pattern: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: pattern)
             let range = NSRange(self.startIndex..<self.endIndex, in: self)
@@ -19,9 +18,16 @@ fileprivate extension String {
                 Range($0.range, in: self).map { String(self[$0]) }
             }
         } catch {
-            print("정규식 에러: \(error)")
             return []
         }
+    }
+    
+    var extractDates:[String] {
+        let a = getMatches(for: #"\b\d{4}\.\d{2}\.\d{2}\b"#)
+        let b = getMatches(for: #"\b\d{4}\-\d{2}\-\d{2}\b"#).map { string in
+            string.replacingOccurrences(of: "-", with: ".")
+        }
+        return a + b
     }
 }
 
