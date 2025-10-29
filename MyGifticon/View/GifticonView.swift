@@ -23,17 +23,15 @@ struct GifticonView : View {
     @State var willRestore:Bool = false
     
     var body: some View {
-        VStack {
-            model.brandImage
-                .resizable()
-                .scaledToFit()
-                .frame(height: 50)
-                .padding(.top, 10)
-
+        VStack (alignment: .leading) {
             KBarcodeView(text: model.barcode, conerRadius: 20)
-                .padding(10)
 
             HStack {
+                model.brandImage
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 50)
+
                 Text(model.barcode)
                     .font(.title)
                 
@@ -48,35 +46,29 @@ struct GifticonView : View {
             }
             
  
+            TextField(text: $memo) {
+                Text("memo")
+            }.textFieldStyle(.roundedBorder)
+            
+            KSelectView(items: GifticonModel.tags, selected: $tagItem)
+            
             HStack {
-                VStack (alignment: .leading) {
-
-
-                    TextField(text: $memo) {
-                        Text("memo")
-                    }.textFieldStyle(.roundedBorder)
-                    
-                    KSelectView(items: GifticonModel.tags, selected: $tagItem)
-                    
-                    HStack {
-                        Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
-                            .foregroundStyle(model.isLimitOver ? .red : .primary)
-                        Spacer()
-                        if model.isLimitOver {
-                            Text("Limit over")
-                                .foregroundStyle(.red)
-                        }
-                        else {
-                            Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
-                        }
-                    }
-                }
+                Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
+                    .foregroundStyle(model.isLimitOver ? .red : .primary)
                 Spacer()
-            }.padding(10)
+                if model.isLimitOver {
+                    Text("Limit over")
+                        .foregroundStyle(.red)
+                }
+                else {
+                    Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
+                }
+            }
             
             Spacer()
             
-            Group {
+            HStack {
+                Spacer()
                 if isNew {
                     KImageButton(
                         image: .init(systemName: "plus"),
@@ -111,9 +103,9 @@ struct GifticonView : View {
                     }
                 }
             }
-            .frame(width: 200, height: 100)
-            .padding(10)
+            .frame(height: 90)
         }
+        .padding(10)
         .background {
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color.background)
