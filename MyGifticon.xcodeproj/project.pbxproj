@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1B040AFC2EAAFEE200B95661 /* KongUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B040AFB2EAAFEE200B95661 /* KongUIKit */; };
+		1B6C77572EB2D68F0092A6B6 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C77562EB2D68F0092A6B6 /* FirebaseAnalytics */; };
+		1B6C77592EB2D68F0092A6B6 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C77582EB2D68F0092A6B6 /* FirebaseAnalyticsCore */; };
+		1B6C775B2EB2D68F0092A6B6 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C775A2EB2D68F0092A6B6 /* FirebaseCore */; };
+		1B6C775D2EB2D68F0092A6B6 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C775C2EB2D68F0092A6B6 /* FirebaseCrashlytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +44,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B6C77572EB2D68F0092A6B6 /* FirebaseAnalytics in Frameworks */,
+				1B6C77592EB2D68F0092A6B6 /* FirebaseAnalyticsCore in Frameworks */,
+				1B6C775D2EB2D68F0092A6B6 /* FirebaseCrashlytics in Frameworks */,
+				1B6C775B2EB2D68F0092A6B6 /* FirebaseCore in Frameworks */,
 				1B040AFC2EAAFEE200B95661 /* KongUIKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +82,7 @@
 				1B1CE1EC2E5498FD00E3FB2F /* Frameworks */,
 				1B1CE1ED2E5498FD00E3FB2F /* Resources */,
 				1B9834222EB1AB3B00E59ACC /* Embed Foundation Extensions */,
+				1B6C775E2EB2D7E30092A6B6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -85,6 +94,10 @@
 			name = MyGifticon;
 			packageProductDependencies = (
 				1B040AFB2EAAFEE200B95661 /* KongUIKit */,
+				1B6C77562EB2D68F0092A6B6 /* FirebaseAnalytics */,
+				1B6C77582EB2D68F0092A6B6 /* FirebaseAnalyticsCore */,
+				1B6C775A2EB2D68F0092A6B6 /* FirebaseCore */,
+				1B6C775C2EB2D68F0092A6B6 /* FirebaseCrashlytics */,
 			);
 			productName = MyGifticon;
 			productReference = 1B1CE1EF2E5498FD00E3FB2F /* MyGifticon.app */;
@@ -117,6 +130,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1B040AFA2EAAFEE200B95661 /* XCRemoteSwiftPackageReference "KongUIKit" */,
+				1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1B1CE1F02E5498FD00E3FB2F /* Products */;
@@ -137,6 +151,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1B6C775E2EB2D7E30092A6B6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}.debug.dylib",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1B1CE1EB2E5498FD00E3FB2F /* Sources */ = {
@@ -202,7 +242,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -261,7 +301,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -281,6 +321,7 @@
 				CODE_SIGN_ENTITLEMENTS = MyGifticon/MyGifticon.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = QU9EPTU238;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -291,6 +332,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -323,6 +365,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -368,6 +411,14 @@
 				kind = branch;
 			};
 		};
+		1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -375,6 +426,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B040AFA2EAAFEE200B95661 /* XCRemoteSwiftPackageReference "KongUIKit" */;
 			productName = KongUIKit;
+		};
+		1B6C77562EB2D68F0092A6B6 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		1B6C77582EB2D68F0092A6B6 /* FirebaseAnalyticsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsCore;
+		};
+		1B6C775A2EB2D68F0092A6B6 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		1B6C775C2EB2D68F0092A6B6 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
