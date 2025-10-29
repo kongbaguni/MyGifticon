@@ -33,10 +33,13 @@ fileprivate extension String {
 
 enum GifticonError : LocalizedError {
     case notGifticonImage
+    case notFoundGifticonAtClipboard
     var errorDescription: String? {
         switch self {
         case .notGifticonImage:
             return NSLocalizedString("notGifticonImage", comment: "error msg")
+        case .notFoundGifticonAtClipboard:
+            return NSLocalizedString("notFoundGifticonAtClipboard", comment: "error msg")
         }
     }
 }

@@ -146,6 +146,7 @@ struct ContentView: View {
             clipboardImage = image
         } else {
             clipboardImage = nil
+            error = GifticonError.notFoundGifticonAtClipboard
         }
     }
     
