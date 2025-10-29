@@ -37,6 +37,7 @@ struct ContentView: View {
             VStack {
                 if gifticons.count == 0 {
                     HomePlaceHolderView()
+                    Spacer()
                 } else {
                     List {
                         Section {
