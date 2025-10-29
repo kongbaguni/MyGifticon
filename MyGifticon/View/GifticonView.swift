@@ -15,18 +15,27 @@ struct GifticonView : View {
     @Environment(\.modelContext) private var modelContext
     let model: GifticonModel
     let isNew:Bool
+    let isDeleted:Bool
+    
     @State var memo:String = ""
     @State var tagItem: KSelectView.Item? = nil
     @State var willDelete:Bool = false
+    @State var willRestore:Bool = false
     
     var body: some View {
         VStack {
+            model.brandImage
+                .resizable()
+                .scaledToFit()
+                .frame(height: 50)
+                .padding(.top, 10)
+
             KBarcodeView(text: model.barcode, conerRadius: 20)
                 .padding(10)
 
             HStack {
                 Text(model.barcode)
-                    .font(.subheadline)
+                    .font(.title)
                 
                 NavigationLink {
                     Image(uiImage: model.image)
@@ -42,16 +51,12 @@ struct GifticonView : View {
             HStack {
                 VStack (alignment: .leading) {
 
+
                     TextField(text: $memo) {
                         Text("memo")
                     }.textFieldStyle(.roundedBorder)
                     
                     KSelectView(items: GifticonModel.tags, selected: $tagItem)
-                    
-                    KTextScrollView(string: model.title, style:
-                            .init(backgroundColor: .secondary.opacity(0.3),
-                                  foregroundColor: .primary,
-                                  cornerRadius: 5))
                     
                     HStack {
                         Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
@@ -59,6 +64,7 @@ struct GifticonView : View {
                         Spacer()
                         if model.isLimitOver {
                             Text("Limit over")
+                                .foregroundStyle(.red)
                         }
                         else {
                             Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
@@ -72,7 +78,10 @@ struct GifticonView : View {
             
             Group {
                 if isNew {
-                    KImageButton(image: .init(systemName: "plus"), style: .simple) {
+                    KImageButton(
+                        image: .init(systemName: "plus"),
+                        title: .init("save"),
+                        style: .simple) {
                         do {
                             modelContext.insert(model)
                             try modelContext.save()
@@ -82,14 +91,27 @@ struct GifticonView : View {
                             print("Failed to save model: \(error)")
                         }
                     }
-                } else {
-                    KImageButton(image: .init(systemName: "trash"), style: .simple) {
+                }
+                else if isDeleted {
+                    KImageButton(
+                        image: .init(systemName: "arrow.uturn.backward.circle"),
+                        title: .init("restore"),
+                        style: .simple) {
+                        willRestore = true
+                        dismiss()
+                    }
+                }
+                else {
+                    KImageButton(
+                        image: .init(systemName: "trash"),
+                        title: .init("delete"),
+                        style: .simple) {
                         willDelete = true
                         dismiss()
                     }
                 }
             }
-            .frame(width: 50)
+            .frame(width: 200, height: 100)
             .padding(10)
         }
         .background {
@@ -106,7 +128,10 @@ struct GifticonView : View {
             do {
                 model.memo = memo
                 model.tag = tagItem?.id ?? 0
-                if willDelete {
+                if isDeleted {
+                    model.deleted = willRestore ? false : true
+                }
+                else if willDelete {
                     model.deleted = true
                 }
                 try modelContext.save()
@@ -119,5 +144,5 @@ struct GifticonView : View {
 }
 
 #Preview {
-    GifticonView(model: .init(title: "test", barcode: "124312", limitDate: "2026.04.04", image: .init(systemName: "circle")!), isNew: true)
+    GifticonView(model: .init(title: "투썸플레이스 치즈케이크 test", barcode: "124312", limitDate: "2026.04.04", image: .init(systemName: "circle")!), isNew: true, isDeleted: false)
 }

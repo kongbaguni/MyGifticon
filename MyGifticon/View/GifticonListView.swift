@@ -22,23 +22,17 @@ struct GifticonListView: View {
         
         ForEach(list) { model in
             NavigationLink {
-                GifticonView(model: model, isNew: false)
+                GifticonView(model: model, isNew: false, isDeleted: false)
             } label: {
-                HStack {
-                    Circle().fill(model.tagItem.color).frame(width: 20)
-                    Text(model.memo)
-                        .font(.title)
-                    Spacer()
-                    Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    
-                    Text(model.limitDateYMD)
-                        .foregroundStyle(model.isLimitOver ? .red : .primary)
-                        .font(.caption)
-                    
-                }
+               GifticonListRowView(model: model)
             }
+        }
+        .onDelete { indexset in
+            for index in indexset {
+                let item = list[index]
+                item.deleted = true
+            }
+            try? self.modelContext.save()
         }
     }
 }

@@ -60,6 +60,7 @@ fileprivate extension String {
             "CU",
             "세븐일레븐",
             "미니스톱",
+            "이마트",
             "이마트24",
             "커피빈",
             "탐앤탐스",
@@ -75,10 +76,18 @@ fileprivate extension String {
             "이마트",
             "다이소",
             "홈플러스",
+            "풀바셋"
         ]
         
         let detectedBrand = brands.first { self.contains($0) }
         return detectedBrand
+    }
+    
+    var getBrandImage:Image? {
+        if let name = self.getBrandName {
+            return .init(name)
+        }
+        return nil
     }
     
     var getMenuName:String? {
@@ -199,11 +208,22 @@ fileprivate extension String {
             "모바일상품권 20,000원권",
             "모바일상품권 30,000원권",
             "모바일금액권 50,000원권",
+            "1,000원권",
+            "2,000원권",
+            "3,000원권",
+            "4,000원권",
+            "5,000원권",
+            "6,000원권",
+            "7,000원권",
+            "8,000원권",
+            "9,000원권",
+            "10,000원권",
             "편의점상품권",
             "기프트카드",
             "문화상품권",
             "해피머니",
-            "컬쳐캐쉬"
+            "컬쳐캐쉬",
+            "교환권"
         ]
         let detectedMenu = menuKeywords.first { self.contains($0) }
         return detectedMenu
@@ -292,6 +312,13 @@ final class GifticonModel {
     var brandName: String? {
         get {
             title.getBrandName
+        }
+    }
+    
+    @Transient
+    var brandImage : Image {
+        get {
+            title.getBrandImage ?? .init(systemName: "questionmark.circle")
         }
     }
     

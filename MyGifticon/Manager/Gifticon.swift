@@ -27,7 +27,7 @@ fileprivate extension String {
         let b = getMatches(for: #"\b\d{4}\-\d{2}\-\d{2}\b"#).map { string in
             string.replacingOccurrences(of: "-", with: ".")
         }
-        return a + b
+        return (a + b).sorted()
     }
 }
 
