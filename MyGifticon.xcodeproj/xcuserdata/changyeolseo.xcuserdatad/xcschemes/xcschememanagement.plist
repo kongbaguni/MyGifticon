@@ -6,13 +6,23 @@
 	<dict>
 		<key>MyGifticon.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>share.xcscheme_^#shared#^_</key>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>1B1CE1EE2E5498FD00E3FB2F</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>0</integer>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1B9834122EB1AB3B00E59ACC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
