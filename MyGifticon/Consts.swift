@@ -53,7 +53,6 @@ struct Consts {
         "폴바셋",
         "다이소",
         "홈플러스",
-        "풀바셋"
     ]
     
     static let menuKeywords: [[String]] = [

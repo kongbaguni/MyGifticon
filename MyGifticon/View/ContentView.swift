@@ -11,6 +11,13 @@ import KongUIKit
 import PhotosUI
 import SwiftData
 
+fileprivate let style:KImageLabel.Style = .init(
+    foregroundColor: .buttonForeground,
+    backgroundColor: .buttonBackground,
+    padding: 10,
+    cornerRadius: 20,
+    isHorizontal: true)
+
 struct ContentView: View {
     @Query(sort: \GifticonModel.createdAt, order: .reverse)
     private var gifticons: [GifticonModel]
@@ -50,29 +57,23 @@ struct ContentView: View {
                     Text("Loading...")
                 } else {
                     HStack {
-                        Button {
+                       
+                        KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
+                                     title: .init("Import image from clipboard"),
+                                     style: style) {
                             loadClipboardImage()
-                        } label: {
-                            Label("Import image from clipboard", systemImage: "document.on.clipboard.fill")
-                                .font(.subheadline)
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
                         }
                         
                         PhotosPicker(
                             selection: $photoPickerItem,
                             matching: .images,
                             photoLibrary: .shared()) {
-                                Label("Select from photo library", systemImage: "photo")
-                                    .font(.subheadline)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
+                                KImageLabel(image: .init(systemName:"photo"),
+                                            title: .init("Select from photo library"),
+                                            style: style
+                                )
                             }
-                    }
+                    }.frame(height:80)
                 }
             }
             .navigationTitle(Text("MyGifticon"))

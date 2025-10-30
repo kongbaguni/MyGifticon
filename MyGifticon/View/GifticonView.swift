@@ -10,6 +10,25 @@ import KongUIKit
 import SwiftData
 import KongUIKit
 
+
+fileprivate extension String {
+    /// 문자열이 4자 이상이면 4글자씩 공백으로 구분해 반환
+      var groupedBy4: String {
+          let text = self.replacingOccurrences(of: " ", with: "")
+          guard text.count > 4 else { return text }
+          
+          var result = ""
+          for (index, char) in text.enumerated() {
+              if index > 0 && index % 4 == 0 {
+                  result.append(" ")
+              }
+              result.append(char)
+          }
+          return result
+      }
+}
+
+
 struct GifticonView : View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -26,7 +45,7 @@ struct GifticonView : View {
         VStack(alignment: .center) {
             KBarcodeView(text: model.barcode, conerRadius: 20)
             HStack (alignment: .center) {
-                Text(model.barcode)
+                Text(model.barcode.groupedBy4)
                     .font(.headline)
                     .foregroundStyle(.black)
                 NavigationLink {
@@ -41,7 +60,7 @@ struct GifticonView : View {
                 }
                 
             }
-            .frame(width: width)
+            .frame(width: width > 0 ? width : 100)
             .padding(.top, -35)
         }
     }

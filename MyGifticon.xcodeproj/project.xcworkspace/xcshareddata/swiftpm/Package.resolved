@@ -1,5 +1,5 @@
 {
-  "originHash" : "ba9f1f08477868423ddc6428f7a93abb400ab0f78541b339e74beb557b441c73",
+  "originHash" : "fe5d6d2ae4b0b4fd2e75cc2a5f21c3835fa2289ba60f8dedfa8a3b964cdd9686",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -97,7 +97,7 @@
       "location" : "git@github.com:kongbaguni/KongUIKit.git",
       "state" : {
         "branch" : "dev",
-        "revision" : "4565162856a2474f9bf892969b09e14ddc5d3fc5"
+        "revision" : "0de7e1cc4d3e06c6791dd50654390144c0e7fcc3"
       }
     },
     {
