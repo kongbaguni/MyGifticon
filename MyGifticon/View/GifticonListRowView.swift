@@ -19,7 +19,6 @@ struct GifticonListRowView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 50, height: 50)
-            
             VStack (alignment: .leading) {
                 Text(model.memo)
                 
@@ -43,10 +42,20 @@ struct GifticonListRowView: View {
 }
 
 #Preview {
-    List {
-        ForEach(Array(Consts.brands.enumerated()), id: \.offset) { idx, brand in
-            GifticonListRowView(model: .init(title: "\(brand) 2027.12.20 아메리카노", barcode: "123123123", limitDate: "2025.11.20", image: .init()))
-
+    NavigationStack {
+        List {
+            ForEach(Array(Consts.brands.enumerated()), id: \.offset) { idx, brand in
+                
+                let model:GifticonModel = .init(title: "\(brand) 2027.12.20 아메리카노", barcode: "123123123", limitDate: "2025.11.20", image: .init())
+                NavigationLink {
+                    GifticonView(model:model, isNew: false, isDeleted: false)
+                    
+                } label: {
+                    GifticonListRowView(model: model)
+                }
+                
+            }
         }
     }
 }
+

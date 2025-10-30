@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "touslesjours.svg",
+      "filename" : "Kyochon.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "tousles_dark.png",
+      "filename" : "Kyochon_dark.svg",
       "idiom" : "universal"
     }
   ],
