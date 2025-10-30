@@ -17,7 +17,7 @@ fi
 #    파일이 저장될 경로를 실제 프로젝트 구조에 맞게 수정해야 합니다.
 #    예: $CI_WORKSPACE/YourAppName/SupportingFiles/GoogleService-Info.plist
 
-FILE_PATH="$CI_WORKSPACE/MyGifticon/GoogleService-Info.plist"
+FILE_PATH="/Volumes/workspace/repository/MyGifticon/GoogleService-Info.plist"
 
 echo "파일을 $FILE_PATH 경로에 생성합니다."
 
