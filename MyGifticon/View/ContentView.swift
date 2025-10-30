@@ -39,58 +39,79 @@ struct ContentView: View {
         }
     }
     @State private var isAlert:Bool = false
+    var buttons: some View {
+        HStack {
+            if isLoading {
+                Text("Loading...")
+            } else {
+                KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
+                             title: .init("Import image from clipboard"),
+                             style: style) {
+                    loadClipboardImage()
+                }
+                
+                PhotosPicker(
+                    selection: $photoPickerItem,
+                    matching: .images,
+                    photoLibrary: .shared()) {
+                        KImageLabel(image: .init(systemName:"photo"),
+                                    title: .init("Select from photo library"),
+                                    style: style
+                        )
+                    }
+            }
+        }.frame(height:80)
+    }
+    
+    var listView : some View {
+        VStack {
+            if gifticons.count == 0 {
+                HomePlaceHolderView()
+                Spacer()
+            } else {
+                List {
+                    Section {
+                        GifticonListView()
+                    }
+                    DeletedGifticonListView()
+                    
+                    Spacer()
+                        .frame(height: 80)
+                        .listRowSeparator(.hidden)
+                        .opacity(0)                    
+                }
+                
+            }
+            Spacer()
+        }
+        .navigationTitle(Text("MyGifticon"))
+        .navigationBarTitleDisplayMode(.inline)
+        .onDrop(of: [.image], isTargeted: nil, perform: { providers in
+            if let provider = providers.first {
+                _ = provider.loadObject(ofClass: UIImage.self) { object, _ in
+                    if let image = object as? UIImage {
+                        DispatchQueue.main.async {
+                            self.clipboardImage = image
+                        }
+                    }
+                }
+                return true
+            }
+            return false
+        })
+    }
+    
     var body: some View {
         NavigationStack {
-            VStack {
-                if gifticons.count == 0 {
-                    HomePlaceHolderView()
+            ZStack {
+                listView
+                
+                VStack {
                     Spacer()
-                } else {
-                    List {
-                        Section {
-                            GifticonListView()
-                        }
-                        DeletedGifticonListView()
-                    }
-                }
-                if isLoading {
-                    Text("Loading...")
-                } else {
-                    HStack {
-                       
-                        KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
-                                     title: .init("Import image from clipboard"),
-                                     style: style) {
-                            loadClipboardImage()
-                        }
-                        
-                        PhotosPicker(
-                            selection: $photoPickerItem,
-                            matching: .images,
-                            photoLibrary: .shared()) {
-                                KImageLabel(image: .init(systemName:"photo"),
-                                            title: .init("Select from photo library"),
-                                            style: style
-                                )
-                            }
-                    }.frame(height:80)
+                    buttons
                 }
             }
-            .navigationTitle(Text("MyGifticon"))
-            .navigationBarTitleDisplayMode(.inline)
-            .onDrop(of: [.image], isTargeted: nil, perform: { providers in
-                if let provider = providers.first {
-                    _ = provider.loadObject(ofClass: UIImage.self) { object, _ in
-                        if let image = object as? UIImage {
-                            DispatchQueue.main.async {
-                                self.clipboardImage = image
-                            }
-                        }
-                    }
-                    return true
-                }
-                return false
-            })
+
         }
         .onChange(of: clipboardImage) { oldValue, newValue in
             Task {
