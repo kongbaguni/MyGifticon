@@ -91,8 +91,6 @@ struct ContentView: View {
                 return false
             })
         }
-        .padding()
-       
         .onChange(of: clipboardImage) { oldValue, newValue in
             Task {
                 if let image = clipboardImage {
@@ -150,7 +148,6 @@ struct ContentView: View {
             error = GifticonError.notFoundGifticonAtClipboard
         }
     }
-    
  
 }
 

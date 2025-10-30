@@ -19,6 +19,7 @@ struct GifticonListRowView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 50, height: 50)
+            
             VStack (alignment: .leading) {
                 Text(model.memo)
                 

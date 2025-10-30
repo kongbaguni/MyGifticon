@@ -23,87 +23,97 @@ struct GifticonView : View {
     @State var willRestore:Bool = false
     
     var body: some View {
-        VStack (alignment: .leading) {
-            KBarcodeView(text: model.barcode, conerRadius: 20)
-
-            HStack {
+        GeometryReader { proxy in
+            VStack (alignment: .leading) {
+                VStack(alignment: .center) {
+                    KBarcodeView(text: model.barcode, conerRadius: 20)
+                    HStack (alignment: .center) {
+                        Text(model.barcode)
+                            .font(.headline)
+                            .foregroundStyle(.black)
+                        NavigationLink {
+                            Image(uiImage: model.image)
+                                .resizable()
+                                .scaledToFit()
+                                .navigationTitle("Gifticon Image")
+                            
+                        } label: {
+                            Image(systemName: "text.rectangle.page")
+                                .foregroundStyle(.teal)
+                        }
+                        
+                    }
+                    .frame(width: proxy.size.width)
+                    .padding(.top, -35)
+                }
+                
                 model.brandImage
                     .resizable()
                     .scaledToFit()
                     .frame(height: 50)
-
-                Text(model.barcode)
-                    .font(.title)
+                    .padding(.leading, 10)
                 
-                NavigationLink {
-                    Image(uiImage: model.image)
-                        .resizable()
-                        .scaledToFit()
-                        .navigationTitle("Gifticon Image")
-                } label: {
-                    Image(systemName: "text.rectangle.page")
+                
+                
+                TextField(text: $memo) {
+                    Text("memo")
+                }.textFieldStyle(.roundedBorder)
+                
+                KSelectView(items: GifticonModel.tags, selected: $tagItem)
+                
+                HStack {
+                    Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
+                        .foregroundStyle(model.isLimitOver ? .red : .primary)
+                    Spacer()
+                    if model.isLimitOver {
+                        Text("Limit over")
+                            .foregroundStyle(.red)
+                    }
+                    else {
+                        Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
+                    }
                 }
-            }
-            
- 
-            TextField(text: $memo) {
-                Text("memo")
-            }.textFieldStyle(.roundedBorder)
-            
-            KSelectView(items: GifticonModel.tags, selected: $tagItem)
-            
-            HStack {
-                Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
-                    .foregroundStyle(model.isLimitOver ? .red : .primary)
+                
                 Spacer()
-                if model.isLimitOver {
-                    Text("Limit over")
-                        .foregroundStyle(.red)
+                
+                HStack {
+                    Spacer()
+                    if isNew {
+                        KImageButton(
+                            image: .init(systemName: "plus"),
+                            title: .init("save"),
+                            style: .simple) {
+                                do {
+                                    modelContext.insert(model)
+                                    try modelContext.save()
+                                    dismiss()
+                                } catch {
+                                    // Handle save error (you might want to surface this to the UI)
+                                    print("Failed to save model: \(error)")
+                                }
+                            }
+                    }
+                    else if isDeleted {
+                        KImageButton(
+                            image: .init(systemName: "arrow.uturn.backward.circle"),
+                            title: .init("restore"),
+                            style: .simple) {
+                                willRestore = true
+                                dismiss()
+                            }
+                    }
+                    else {
+                        KImageButton(
+                            image: .init(systemName: "trash"),
+                            title: .init("delete"),
+                            style: .simple) {
+                                willDelete = true
+                                dismiss()
+                            }
+                    }
                 }
-                else {
-                    Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
-                }
+                .frame(height: 90)
             }
-            
-            Spacer()
-            
-            HStack {
-                Spacer()
-                if isNew {
-                    KImageButton(
-                        image: .init(systemName: "plus"),
-                        title: .init("save"),
-                        style: .simple) {
-                        do {
-                            modelContext.insert(model)
-                            try modelContext.save()
-                            dismiss()
-                        } catch {
-                            // Handle save error (you might want to surface this to the UI)
-                            print("Failed to save model: \(error)")
-                        }
-                    }
-                }
-                else if isDeleted {
-                    KImageButton(
-                        image: .init(systemName: "arrow.uturn.backward.circle"),
-                        title: .init("restore"),
-                        style: .simple) {
-                        willRestore = true
-                        dismiss()
-                    }
-                }
-                else {
-                    KImageButton(
-                        image: .init(systemName: "trash"),
-                        title: .init("delete"),
-                        style: .simple) {
-                        willDelete = true
-                        dismiss()
-                    }
-                }
-            }
-            .frame(height: 90)
         }
         .padding(10)
         .background {
@@ -137,4 +147,6 @@ struct GifticonView : View {
 
 #Preview {
     GifticonView(model: .init(title: "투썸플레이스 치즈케이크 test", barcode: "124312", limitDate: "2026.04.04", image: .init(systemName: "circle")!), isNew: true, isDeleted: false)
+    
+    
 }

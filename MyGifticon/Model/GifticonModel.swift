@@ -43,9 +43,17 @@ fileprivate extension String {
     }
     
     var getMenuName:String? {
-       
-        let detectedMenu = Consts.menuKeywords.first { self.contains($0) }
-        return detectedMenu
+        var result = ""
+        
+        for list in Consts.menuKeywords {
+            if result != "" {
+                result += " "
+            }
+            if let txt = list.first(where: { self.contains($0) }) {
+                result += txt
+            }
+        }
+        return result.isEmpty ? nil : result
     }
 }
 
@@ -137,7 +145,7 @@ final class GifticonModel {
     @Transient
     var brandImage : Image {
         get {
-            title.getBrandImage ?? .init(systemName: "questionmark.circle")
+            title.getBrandImage ?? Image("circle")
         }
     }
     
