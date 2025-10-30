@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "emart.svg",
+      "filename" : "emart24.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "emart24_dark.svg",
       "idiom" : "universal"
     }
   ],

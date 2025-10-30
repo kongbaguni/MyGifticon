@@ -3,6 +3,16 @@
     {
       "filename" : "emart.svg",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "emart_dark.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
