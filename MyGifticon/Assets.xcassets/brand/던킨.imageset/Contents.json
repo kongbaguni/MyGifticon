@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Dunkin'_logo.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

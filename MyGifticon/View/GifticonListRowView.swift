@@ -44,7 +44,7 @@ struct GifticonListRowView: View {
 #Preview {
     List {
         ForEach(Array(Consts.brands.enumerated()), id: \.offset) { idx, brand in
-            GifticonListRowView(model: .init(title: "\(brand) 아메리카노", barcode: "123123123", limitDate: "2025.11.20", image: .init()))
+            GifticonListRowView(model: .init(title: "\(brand) 2027.12.20 아메리카노", barcode: "123123123", limitDate: "2025.11.20", image: .init()))
 
         }
     }
