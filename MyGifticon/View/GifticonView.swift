@@ -22,97 +22,138 @@ struct GifticonView : View {
     @State var willDelete:Bool = false
     @State var willRestore:Bool = false
     
+    func barcodeView(width: CGFloat)-> some View {
+        VStack(alignment: .center) {
+            KBarcodeView(text: model.barcode, conerRadius: 20)
+            HStack (alignment: .center) {
+                Text(model.barcode)
+                    .font(.headline)
+                    .foregroundStyle(.black)
+                NavigationLink {
+                    Image(uiImage: model.image)
+                        .resizable()
+                        .scaledToFit()
+                        .navigationTitle("Gifticon Image")
+                    
+                } label: {
+                    Image(systemName: "text.rectangle.page")
+                        .foregroundStyle(.teal)
+                }
+                
+            }
+            .frame(width: width)
+            .padding(.top, -35)
+        }
+    }
+    
+    var brandImageView: some View {
+        model.brandImage
+            .resizable()
+            .scaledToFit()
+            .frame(height: 50)
+            .padding(.leading, 10)
+    }
+    
+    var inputView : some View {
+        VStack {
+            TextField(text: $memo) {
+                Text("memo")
+            }.textFieldStyle(.roundedBorder)
+            KSelectView(items: GifticonModel.tags, selected: $tagItem)
+
+        }
+    }
+    
+    var infoView: some View {
+        HStack {
+            Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
+                .foregroundStyle(model.isLimitOver ? .red : .primary)
+            Spacer()
+            if model.isLimitOver {
+                Text("Limit over")
+                    .foregroundStyle(.red)
+            }
+            else {
+                Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
+            }
+        }
+    }
+    
+    var buttonView : some View {
+        HStack {
+            Spacer()
+            if isNew {
+                KImageButton(
+                    image: .init(systemName: "plus"),
+                    title: .init("save"),
+                    style: .simple) {
+                        do {
+                            modelContext.insert(model)
+                            try modelContext.save()
+                            dismiss()
+                        } catch {
+                            // Handle save error (you might want to surface this to the UI)
+                            print("Failed to save model: \(error)")
+                        }
+                    }
+            }
+            else if isDeleted {
+                KImageButton(
+                    image: .init(systemName: "arrow.uturn.backward.circle"),
+                    title: .init("restore"),
+                    style: .simple) {
+                        willRestore = true
+                        dismiss()
+                    }
+            }
+            else {
+                KImageButton(
+                    image: .init(systemName: "trash"),
+                    title: .init("delete"),
+                    style: .simple) {
+                        willDelete = true
+                        dismiss()
+                    }
+            }
+        }
+        .frame(height: 90)
+    }
+    
     var body: some View {
         GeometryReader { proxy in
-            VStack (alignment: .leading) {
-                VStack(alignment: .center) {
-                    KBarcodeView(text: model.barcode, conerRadius: 20)
-                    HStack (alignment: .center) {
-                        Text(model.barcode)
-                            .font(.headline)
-                            .foregroundStyle(.black)
-                        NavigationLink {
-                            Image(uiImage: model.image)
-                                .resizable()
-                                .scaledToFit()
-                                .navigationTitle("Gifticon Image")
-                            
-                        } label: {
-                            Image(systemName: "text.rectangle.page")
-                                .foregroundStyle(.teal)
-                        }
-                        
-                    }
-                    .frame(width: proxy.size.width)
-                    .padding(.top, -35)
-                }
-                
-                model.brandImage
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 50)
-                    .padding(.leading, 10)
-                
-                
-                
-                TextField(text: $memo) {
-                    Text("memo")
-                }.textFieldStyle(.roundedBorder)
-                
-                KSelectView(items: GifticonModel.tags, selected: $tagItem)
-                
-                HStack {
-                    Text(String(format: NSLocalizedString("until %@", comment: "까지"), model.limitDateYMD))
-                        .foregroundStyle(model.isLimitOver ? .red : .primary)
+            if proxy.size.width < proxy.size.height {
+                VStack (alignment: .leading) {
+                    barcodeView(width: proxy.size.width)
+                    
+                    brandImageView
+                    
+                    inputView
+                    
+                    infoView
+                    
                     Spacer()
-                    if model.isLimitOver {
-                        Text("Limit over")
-                            .foregroundStyle(.red)
-                    }
-                    else {
-                        Text(String(format: NSLocalizedString("%d days left", comment: "%d 일 남음"), model.daysUntilLimit))
-                    }
+                    buttonView
+                    
                 }
-                
-                Spacer()
-                
+            } else {
                 HStack {
-                    Spacer()
-                    if isNew {
-                        KImageButton(
-                            image: .init(systemName: "plus"),
-                            title: .init("save"),
-                            style: .simple) {
-                                do {
-                                    modelContext.insert(model)
-                                    try modelContext.save()
-                                    dismiss()
-                                } catch {
-                                    // Handle save error (you might want to surface this to the UI)
-                                    print("Failed to save model: \(error)")
-                                }
-                            }
+                    VStack {
+                        brandImageView
+                            .padding()
+                        Spacer()
+                    }.frame(width: 100)
+
+                    ScrollView {
+                        barcodeView(width: proxy.size.width - 200)
+                        inputView
                     }
-                    else if isDeleted {
-                        KImageButton(
-                            image: .init(systemName: "arrow.uturn.backward.circle"),
-                            title: .init("restore"),
-                            style: .simple) {
-                                willRestore = true
-                                dismiss()
-                            }
-                    }
-                    else {
-                        KImageButton(
-                            image: .init(systemName: "trash"),
-                            title: .init("delete"),
-                            style: .simple) {
-                                willDelete = true
-                                dismiss()
-                            }
-                    }
+                    
+                    VStack {
+                        Spacer()
+                        buttonView
+                    }.frame(width: 80)
+
                 }
-                .frame(height: 90)
             }
         }
         .padding(10)
