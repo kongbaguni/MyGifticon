@@ -18,7 +18,7 @@ struct GifticonListRowView: View {
             model.brandImage
                 .resizable()
                 .scaledToFit()
-                .frame(width: 50)
+                .frame(width: 50, height: 50)
             VStack (alignment: .leading) {
                 Text(model.memo)
                 
@@ -43,12 +43,9 @@ struct GifticonListRowView: View {
 
 #Preview {
     List {
-        GifticonListRowView(model: .init(title: "투썸플레이스 치즈케이크", barcode: "123123123", limitDate: "2025.10.29", image: .init()))
-        
-        GifticonListRowView(model: .init(title: "이마트24 아메리카노", barcode: "123123123", limitDate: "2025.11.20", image: .init()))
-        
-        GifticonListRowView(model: .init(title: "CU 1,000원권", barcode: "123123123", limitDate: "2025.11.20", image: .init()))
+        ForEach(Array(Consts.brands.enumerated()), id: \.offset) { idx, brand in
+            GifticonListRowView(model: .init(title: "\(brand) 아메리카노", barcode: "123123123", limitDate: "2025.11.20", image: .init()))
 
-
+        }
     }
 }
