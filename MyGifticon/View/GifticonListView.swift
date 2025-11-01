@@ -28,7 +28,7 @@ struct GifticonListView: View {
     @AppStorage("selectedTag") private var selectedTagRaw: Int = -1
     
     var listView: some View {
-        ForEach(filteredList) { model in
+        ForEach(filteredList, id: \.self) { model in
             NavigationLink {
                 GifticonView(model: model, isNew: false, isDeleted: false)
             } label: {
@@ -44,6 +44,12 @@ struct GifticonListView: View {
         }
     }
     
+    var iconTestListView: some View {
+        ForEach(Consts.brands, id: \.self) { brand in
+            GifticonListRowView(model: .init(title: brand, barcode: "1231231234", limitDate: "2027.12.31", image: .init()))
+        }
+    }
+    
     var body: some View {
         Group {
             KSelectView(items: GifticonModel.tags, canCancel: true, selected: $selectedTag)
@@ -51,6 +57,8 @@ struct GifticonListView: View {
                 Text("empty list msg when tag is selected")
             }
             listView
+            
+            iconTestListView
         }
         .onAppear {
             if selectedTagRaw > -1 {
