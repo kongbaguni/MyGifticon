@@ -138,14 +138,14 @@ final class GifticonModel {
     @Transient
     var brandName: String? {
         get {
-            title.getBrandName
+            title.getBrandName ?? memo.getBrandName
         }
     }
     
     @Transient
     var brandImage : Image {
         get {
-            title.getBrandImage ?? Image("circle")
+            title.getBrandImage ?? memo.getBrandImage ?? Image("circle")
         }
     }
     

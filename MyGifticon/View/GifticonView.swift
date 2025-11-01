@@ -30,6 +30,13 @@ fileprivate extension String {
 
 
 struct GifticonView : View {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    var isLandscape: Bool {
+        horizontalSizeClass == .regular && verticalSizeClass == .compact
+    }
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     let model: GifticonModel
@@ -140,7 +147,7 @@ struct GifticonView : View {
     
     var body: some View {
         GeometryReader { proxy in
-            if proxy.size.width < proxy.size.height {
+            if !isLandscape {
                 VStack (alignment: .leading) {
                     barcodeView(width: proxy.size.width)
                     
@@ -152,7 +159,6 @@ struct GifticonView : View {
                     
                     Spacer()
                     buttonView
-                    
                 }
             } else {
                 HStack {

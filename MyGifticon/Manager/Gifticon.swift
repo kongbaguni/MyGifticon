@@ -27,7 +27,13 @@ fileprivate extension String {
         let b = getMatches(for: #"\b\d{4}\-\d{2}\-\d{2}\b"#).map { string in
             string.replacingOccurrences(of: "-", with: ".")
         }
-        return (a + b).sorted()
+        
+        let c = getMatches(for: #"\d{4}년\s*\d{1,2}월\s*\d{1,2}일"#).map { string in
+            string.replacingOccurrences(of: "년 ", with: ".")
+                .replacingOccurrences(of: "월 ", with: ".")
+                .replacingOccurrences(of: "일", with: "")
+        }
+        return (a + b + c).sorted()
     }
 }
 

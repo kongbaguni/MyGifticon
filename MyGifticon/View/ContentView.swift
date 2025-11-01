@@ -39,6 +39,14 @@ struct ContentView: View {
         }
     }
     @State private var isAlert:Bool = false
+    
+    var adView : some View {
+        Spacer()
+            .frame(height: 80)
+            .listRowSeparator(.hidden)
+            .opacity(0)
+//        TODO : AD here
+    }
     var buttons: some View {
         HStack {
             if isLoading {
@@ -75,44 +83,52 @@ struct ContentView: View {
                     }
                     DeletedGifticonListView()
                     
-                    Spacer()
-                        .frame(height: 80)
-                        .listRowSeparator(.hidden)
-                        .opacity(0)                    
+                    adView
                 }
-                
             }
             Spacer()
         }
-        .navigationTitle(Text("MyGifticon"))
-        .navigationBarTitleDisplayMode(.inline)
-        .onDrop(of: [.image], isTargeted: nil, perform: { providers in
-            if let provider = providers.first {
-                _ = provider.loadObject(ofClass: UIImage.self) { object, _ in
-                    if let image = object as? UIImage {
-                        DispatchQueue.main.async {
-                            self.clipboardImage = image
-                        }
-                    }
-                }
-                return true
-            }
-            return false
-        })
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                listView
-                
-                VStack {
-                    Spacer()
-                    buttons
+        GeometryReader { proxy in
+            NavigationStack {
+                if proxy.size.width < proxy.size.height {
+                    ZStack {
+                        listView
+                        VStack {
+                            Spacer()
+                            buttons
+                        }
+                    }
                 }
-            }
+                else {
+                    HStack {
+                        if gifticons.count == 0 {
+                            HomePlaceHolderView()
+                            Spacer()
+                        }
+                        List {
+                            GifticonListView()
+                        }
+                        ZStack {
+                            List {
+                                DeletedGifticonListView()
+                                adView
+                            }
+                            VStack {
+                                Spacer()
+                                buttons
+                            }
+                        }
 
+                    }
+                }
+
+            }
         }
+        .navigationTitle(Text("MyGifticon"))
+        .navigationBarTitleDisplayMode(.inline)
         .onChange(of: clipboardImage) { oldValue, newValue in
             Task {
                 if let image = clipboardImage {
