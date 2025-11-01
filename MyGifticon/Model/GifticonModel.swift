@@ -37,7 +37,7 @@ fileprivate extension String {
     
     var getBrandImage:Image? {
         if let name = self.getBrandName {
-            return .init(name)
+            return .init("logo_"+name)
         }
         return nil
     }
