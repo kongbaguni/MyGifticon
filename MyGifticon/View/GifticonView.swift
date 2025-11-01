@@ -148,8 +148,10 @@ struct GifticonView : View {
     var body: some View {
         GeometryReader { proxy in
             if !isLandscape {
+                
                 VStack (alignment: .leading) {
                     barcodeView(width: proxy.size.width)
+                        .frame(minHeight: 150)
                     
                     brandImageView
                     

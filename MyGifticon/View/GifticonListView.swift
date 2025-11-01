@@ -18,13 +18,21 @@ struct GifticonListView: View {
     )
     private var list: [GifticonModel]
     
-    var body: some View {
-        
-        ForEach(list) { model in
+    var filteredList: [GifticonModel] {
+        guard let tag = selectedTag else { return list }
+        return list.filter { $0.tag == tag.id } // 모델의 tag 필드에 맞춰 수정
+    }
+    
+    @State private var selectedTag: KSelectView.Item? = nil
+    
+    @AppStorage("selectedTag") private var selectedTagRaw: Int = -1
+    
+    var listView: some View {
+        ForEach(filteredList) { model in
             NavigationLink {
                 GifticonView(model: model, isNew: false, isDeleted: false)
             } label: {
-               GifticonListRowView(model: model)
+                GifticonListRowView(model: model)
             }
         }
         .onDelete { indexset in
@@ -34,6 +42,26 @@ struct GifticonListView: View {
             }
             try? self.modelContext.save()
         }
+    }
+    
+    var body: some View {
+        Group {
+            KSelectView(items: GifticonModel.tags, canCancel: true, selected: $selectedTag)
+            if selectedTag != nil && filteredList.isEmpty {
+                Text("empty list msg when tag is selected")
+            }
+            listView
+        }
+        .onAppear {
+            if selectedTagRaw > -1 {
+                self.selectedTag = GifticonModel.tags[selectedTagRaw]
+            } else {
+                self.selectedTag = nil
+            }
+        }
+        .onChange(of: selectedTag, {
+            selectedTagRaw = selectedTag?.id ?? -1
+        })
     }
 }
 

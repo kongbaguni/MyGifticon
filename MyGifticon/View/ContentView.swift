@@ -19,6 +19,15 @@ fileprivate let style:KImageLabel.Style = .init(
     isHorizontal: true)
 
 struct ContentView: View {
+    
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    var isLandscape: Bool {
+        horizontalSizeClass == .regular && verticalSizeClass == .compact
+    }
+    
+    
     @Query(sort: \GifticonModel.createdAt, order: .reverse)
     private var gifticons: [GifticonModel]
     
@@ -78,7 +87,7 @@ struct ContentView: View {
                 Spacer()
             } else {
                 List {
-                    Section {
+                    Section("Gifticon") {
                         GifticonListView()
                     }
                     DeletedGifticonListView()
@@ -93,7 +102,7 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { proxy in
             NavigationStack {
-                if proxy.size.width < proxy.size.height {
+                if !isLandscape {
                     ZStack {
                         listView
                         VStack {
@@ -109,7 +118,9 @@ struct ContentView: View {
                             Spacer()
                         }
                         List {
-                            GifticonListView()
+                            Section("Gifticon") {
+                                GifticonListView()
+                            }
                         }
                         ZStack {
                             List {
