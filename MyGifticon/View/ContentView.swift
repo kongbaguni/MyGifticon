@@ -50,10 +50,19 @@ struct ContentView: View {
     @State private var isAlert:Bool = false
     
     var adView : some View {
-        Spacer()
-            .frame(height: 80)
-            .listRowSeparator(.hidden)
-            .opacity(0)
+        VStack(alignment: .trailing) {
+            HStack {
+                Text("version")
+                    .font(.body)
+                    .foregroundStyle(.secondary)
+                Text.versionName
+                    .font(.body.bold())
+                    .foregroundStyle(.primary)
+            }
+            Spacer()
+        }
+        .frame(height: 80)
+        .listRowSeparator(.hidden)
 //        TODO : AD here
     }
     var buttons: some View {
