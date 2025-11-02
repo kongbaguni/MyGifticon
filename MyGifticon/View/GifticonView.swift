@@ -51,10 +51,16 @@ struct GifticonView : View {
     func barcodeView(width: CGFloat)-> some View {
         VStack(alignment: .center) {
             KBarcodeView(text: model.barcode, conerRadius: 20)
+                .blur(radius: isDeleted ? 3 : 0)
+                .padding(isDeleted ? 5 : 0)
+
+
             HStack (alignment: .center) {
                 Text(model.barcode.groupedBy4)
                     .font(.headline)
                     .foregroundStyle(.black)
+                    .blur(radius: isDeleted ? 3 : 0)
+                
                 NavigationLink {
                     Image(uiImage: model.image)
                         .resizable()
