@@ -91,9 +91,9 @@ final class GifticonModel {
     /** 기프티콘에서 추출한 유효기간 종료일 */
     var limitDateYMD: String = ""
     /** 기츠티콘 이미지 저장 */
-    var imageData: Data
+    var imageData: Data = Data()
     /** 저장일시 */
-    var createdAt: Date
+    var createdAt: Date = Date.now
     /** 삭제처리 Flag */
     var deleted: Bool = false
     /** 컬러 테그 */
