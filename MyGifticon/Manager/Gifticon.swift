@@ -9,6 +9,28 @@ import Vision
 import UIKit
 
 fileprivate extension String {
+    func fixDatePattern(pattern:String)->String {
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        let range = NSRange(location: 0, length: self.utf16.count)
+        
+        // Replaced original single stringByReplacingMatches call with iterative build
+        var result = self
+        let matches = regex.matches(in: self, options: [], range: range)
+        // Build the replacement from the end to preserve ranges
+        for match in matches.reversed() {
+            guard match.numberOfRanges >= 4 else { continue }
+            let year = (self as NSString).substring(with: match.range(at: 1))
+            let month = (self as NSString).substring(with: match.range(at: 2))
+            let day = (self as NSString).substring(with: match.range(at: 3))
+            let replacement = "20\(year).\(month).\(day)"
+            let fullRange = match.range(at: 0)
+            if let swiftRange = Range(fullRange, in: result) {
+                result.replaceSubrange(swiftRange, with: replacement)
+            }
+        }
+        return result
+    }
+    
     func getMatches(for pattern: String) -> [String] {
         do {
             let regex = try NSRegularExpression(pattern: pattern)
@@ -22,18 +44,22 @@ fileprivate extension String {
         }
     }
     
-    var extractDates:[String] {
-        let a = getMatches(for: #"\b\d{4}\.\d{2}\.\d{2}\b"#)
-        let b = getMatches(for: #"\b\d{4}\-\d{2}\-\d{2}\b"#).map { string in
+    var dateStrings:[String] {
+       
+        let a = self.getMatches(for: #"\b\d{4}\.\d{1,2}\.\d{2}\b"#)
+        let b = self.getMatches(for: #"\b\d{4}\-\d{1,2}\-\d{2}\b"#).map { string in
             string.replacingOccurrences(of: "-", with: ".")
         }
         
-        let c = getMatches(for: #"\d{4}년\s*\d{1,2}월\s*\d{1,2}일"#).map { string in
+        let c = self.getMatches(for: #"\d{4}년\s*\d{1,2}월\s*\d{1,2}일"#).map { string in
             string.replacingOccurrences(of: "년 ", with: ".")
                 .replacingOccurrences(of: "월 ", with: ".")
                 .replacingOccurrences(of: "일", with: "")
         }
-        return (a + b + c).sorted()
+        let d = self.fixDatePattern(pattern:"(\\d{2}).(\\d{2}).(\\d{2})")
+                .getMatches(for:  #"\b\d{4}\.\d{2}\.\d{2}\b"#)
+        
+        return (a + b + c + d).sorted()
     }
 }
 
@@ -122,7 +148,7 @@ extension UIImage {
         func process() {
             guard let barcode = barcode,
                   let text = text,
-                  let limitdate = text.extractDates.last
+                  let limitdate = text.dateStrings.last
             else {
                 if refCount == 0 {
                     completion(nil, .notGifticonImage)
