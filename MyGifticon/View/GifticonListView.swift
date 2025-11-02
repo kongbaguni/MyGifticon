@@ -37,7 +37,7 @@ struct GifticonListView: View {
         }
         .onDelete { indexset in
             for index in indexset {
-                let item = list[index]
+                let item = filteredList[index]
                 item.deleted = true
             }
             try? self.modelContext.save()
