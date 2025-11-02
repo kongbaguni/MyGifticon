@@ -73,11 +73,15 @@ struct GifticonView : View {
     }
     
     var brandImageView: some View {
-        model.brandImage
-            .resizable()
-            .scaledToFit()
-            .frame(height: 50)
-            .padding(.leading, 10)
+        HStack {
+            Spacer()
+            model.brandImage
+                .resizable()
+                .scaledToFit()
+                .frame(minHeight: 50)
+            Spacer()
+
+        }
     }
     
     var inputView : some View {
@@ -154,6 +158,7 @@ struct GifticonView : View {
                         .frame(minHeight: 150)
                     
                     brandImageView
+                    
                     
                     inputView
                     
