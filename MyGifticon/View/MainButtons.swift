@@ -24,26 +24,29 @@ struct MainButtons: View {
     var button: some View {
         HStack {
             Spacer()
-            KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
-                         title: .init("Import image from clipboard"),
-                         style: style) {
-                onTouch()
-                
-            }
-            
-            PhotosPicker(
-                selection: $photoPickerItem,
-                matching: .images,
-                photoLibrary: .shared()) {
-                    KImageLabel(image: .init(systemName:"photo"),
-                                title: .init("Select from photo library"),
-                                style: style
-                    )
+            VStack(alignment: .trailing) {
+                KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
+                             title: .init("Import image from clipboard"),
+                             style: style) {
+                    onTouch()
+                    
                 }
+                
+                PhotosPicker(
+                    selection: $photoPickerItem,
+                    matching: .images,
+                    photoLibrary: .shared()) {
+                        KImageLabel(image: .init(systemName:"photo"),
+                                    title: .init("Select from photo library"),
+                                    style: style
+                        )
+                    }
+
+            }
             
             KImageButton(image: .init(systemName: "minus"), title: nil, style: style) {
                 isOpen = false
-            }.frame(width: 80, height: 80)
+            }.frame(width: 40, height: 40)
         }
     }
     
@@ -56,11 +59,11 @@ struct MainButtons: View {
                     Spacer()
                     KImageButton(image: .init(systemName:"plus"), title: nil, style: style) {
                         isOpen = true
-                    }.frame(width: 80, height: 80)
+                    }.frame(width: 40, height: 40)
                 }
             }
         }
-        .frame(height:80)
+        .frame(height:200)
         
     }
 }
