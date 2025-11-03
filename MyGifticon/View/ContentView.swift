@@ -66,27 +66,9 @@ struct ContentView: View {
 //        TODO : AD here
     }
     var buttons: some View {
-        HStack {
-            if isLoading {
-                Text("Loading...")
-            } else {
-                KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
-                             title: .init("Import image from clipboard"),
-                             style: style) {
-                    loadClipboardImage()
-                }
-                
-                PhotosPicker(
-                    selection: $photoPickerItem,
-                    matching: .images,
-                    photoLibrary: .shared()) {
-                        KImageLabel(image: .init(systemName:"photo"),
-                                    title: .init("Select from photo library"),
-                                    style: style
-                        )
-                    }
-            }
-        }.frame(height:80)
+        MainButtons(photoPickerItem: $photoPickerItem) {
+            loadClipboardImage()
+        }.padding(20)
     }
     
     var listView : some View {
