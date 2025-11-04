@@ -8,6 +8,7 @@
 import SwiftUI
 import KongUIKit
 import PhotosUI
+import Lottie
 
 fileprivate let style:KImageLabel.Style = .init(
     foregroundColor: .buttonForeground,
@@ -19,7 +20,34 @@ fileprivate let style:KImageLabel.Style = .init(
 struct MainButtons: View {
     @Binding var photoPickerItem: PhotosPickerItem?
     let onTouch:() ->Void
-    @State var isOpen: Bool = false
+    @AppStorage("bottomButtonIsOpen") var isOpen: Bool = false
+    var minButton : some View {
+        Button {
+            isOpen = false
+        } label: {
+            LottieView(animation: .named("Minus"))
+                .playing(loopMode: .playOnce)
+        }
+        .background {
+            Circle()
+                .fill(.secondary.opacity(0.2))
+        }
+        .frame(width: 40, height: 40)
+    }
+    
+    var plusButton : some View {
+        Button {
+            isOpen = true
+        } label: {
+            LottieView(animation: .named("Plus"))
+                .playing(loopMode: .playOnce)
+        }
+        .background {
+            Circle()
+                .fill(.secondary.opacity(0.2))
+        }
+        .frame(width: 40, height: 40)
+    }
     
     var button: some View {
         HStack {
@@ -43,10 +71,11 @@ struct MainButtons: View {
                     }
 
             }
-            
-            KImageButton(image: .init(systemName: "minus"), title: nil, style: style) {
-                isOpen = false
-            }.frame(width: 40, height: 40)
+            VStack {
+                Spacer()
+                minButton.safeGlassEffect(useInteractive: true, inShape: .circle)
+            }
+
         }
     }
     
@@ -57,13 +86,15 @@ struct MainButtons: View {
             } else {
                 HStack {
                     Spacer()
-                    KImageButton(image: .init(systemName:"plus"), title: nil, style: style) {
-                        isOpen = true
-                    }.frame(width: 40, height: 40)
+                    VStack {
+                        Spacer()
+                        plusButton.safeGlassEffect(useInteractive: true, inShape: .circle)
+                    }
                 }
             }
         }
         .frame(height:200)
+        .animation(.easeInOut, value: isOpen)
         
     }
 }
