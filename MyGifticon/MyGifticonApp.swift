@@ -31,8 +31,8 @@ struct MyGifticonApp: App {
             schema: schema,
             isStoredInMemoryOnly: false,
             allowsSave: true,
-            groupContainer: .automatic,
-            cloudKitDatabase: .automatic
+            groupContainer: .identifier("group.net.kongbaguni.mygifticon"),
+            cloudKitDatabase: .private("myGifticon")
         )
 
         do {

@@ -40,7 +40,11 @@ struct GifticonListView: View {
                 let item = filteredList[index]
                 item.deleted = true
             }
-            try? self.modelContext.save()
+            do {
+                try self.modelContext.save()
+            } catch {                
+                fatalError(error.localizedDescription)
+            }
         }
     }
     
