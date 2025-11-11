@@ -59,6 +59,10 @@ struct Consts {
     
     static let menuKeywords: [[String]] = [
         [
+          "(ICE)",
+          "(HOT)"
+        ],
+        [
             // ☕️ 커피 & 음료
             "아메리카노",
             "카페라떼",

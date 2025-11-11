@@ -44,12 +44,12 @@ fileprivate extension String {
     
     var getMenuName:String? {
         var result = ""
-        
+        let newStr = self.replacingOccurrences(of: "\n", with: "")
         for list in Consts.menuKeywords {
             if result != "" {
                 result += " "
             }
-            if let txt = list.first(where: { self.contains($0) }) {
+            if let txt = list.first(where: { newStr.contains($0) }) {
                 result += txt
             }
         }
