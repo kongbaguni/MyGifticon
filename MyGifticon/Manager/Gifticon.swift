@@ -59,7 +59,11 @@ fileprivate extension String {
         let d = self.fixDatePattern(pattern:"(\\d{2}).(\\d{2}).(\\d{2})")
                 .getMatches(for:  #"\b\d{4}\.\d{2}\.\d{2}\b"#)
         
-        return (a + b + c + d).sorted()
+        let f = self.getMatches(for: #"\d{4}/\d{1,2}/\d{2}"#).map { string in
+            string.replacingOccurrences(of: "/", with: ".")
+        }
+        
+        return (a + b + c + d + f).sorted()
     }
 }
 

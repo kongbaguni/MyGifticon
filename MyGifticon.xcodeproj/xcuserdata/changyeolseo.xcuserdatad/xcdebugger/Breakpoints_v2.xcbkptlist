@@ -62,8 +62,8 @@
             filePath = "MyGifticon/Manager/Gifticon.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "process()"
             landmarkType = "9">
          </BreakpointContent>
@@ -103,17 +103,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "935E9960-6771-44F9-A6A2-46D6A56F854B"
-            shouldBeEnabled = "Yes"
+            uuid = "96C7A1DE-614F-4038-BDC0-45B4C1883778"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyGifticon/Model/GifticonModel.swift"
+            filePath = "MyGifticon/Manager/Gifticon.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
-            landmarkName = "init(title:barcode:limitDate:image:)"
-            landmarkType = "7">
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "dateStrings"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
