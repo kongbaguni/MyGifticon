@@ -162,6 +162,7 @@ struct ContentView: View {
                         if error != nil {
                             self.error = error
                         }
+                        self.photoPickerItem = nil
                     }
                 }
             }
@@ -171,7 +172,6 @@ struct ContentView: View {
                 if let data = try? await photoPickerItem?.loadTransferable(type: Data.self) {
                     let uiImage = UIImage(data: data)
                     self.clipboardImage = uiImage
-                    photoPickerItem = nil
                 }
             }
                 
@@ -202,21 +202,16 @@ struct ContentView: View {
     // MARK: - 클립보드 이미지 가져오기
     func loadClipboardImage() {
         let pasteboard = UIPasteboard.general
-        if let image = pasteboard.image {
-            self.clipboardImage = image
-        }
         if let url = pasteboard.url {
             self.url = url
+        }
+        else if let image = pasteboard.image {
+            self.clipboardImage = image
         }
         else {
             self.error = GifticonError.notFoundGifticonAtClipboard
         }
     }
     
-    func WebViewToImage(url:URL) {
-        
-        
-        
-    }
  
 }
