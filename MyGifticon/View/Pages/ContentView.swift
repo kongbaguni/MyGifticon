@@ -48,6 +48,8 @@ struct ContentView: View {
         }
     }
     @State private var isAlert:Bool = false
+    @State private var url:URL? = nil
+    
     
     var adView : some View {
         VStack(alignment: .trailing) {
@@ -90,7 +92,7 @@ struct ContentView: View {
         }
     }
     
-    var body: some View {
+    var mainView: some View {
         GeometryReader { proxy in
             NavigationStack {
                 if !isLandscape {
@@ -123,11 +125,28 @@ struct ContentView: View {
                                 buttons
                             }
                         }
-
+                        
                     }
                 }
-
+                
             }
+        }
+
+    }
+    
+    
+    var body: some View {
+        ZStack {
+            if let url = url {
+                WebPageToImageView(
+                    url: url,
+                    onSnapshot: { image in
+                        guard let image else { return }
+                        self.clipboardImage = image
+                    }
+                )
+            }
+            mainView
         }
         .navigationTitle(Text("MyGifticon"))
         .navigationBarTitleDisplayMode(.inline)
@@ -137,7 +156,9 @@ struct ContentView: View {
                     isLoading = true
                     image.getGifticon { data, error in
                         newGifticonModel = data
+                        newGifticonModel?.urlString = self.url?.absoluteString ?? ""
                         isLoading = false
+                        self.url = nil
                         if error != nil {
                             self.error = error
                         }
@@ -182,12 +203,20 @@ struct ContentView: View {
     func loadClipboardImage() {
         let pasteboard = UIPasteboard.general
         if let image = pasteboard.image {
-            clipboardImage = image
-        } else {
-            clipboardImage = nil
-            error = GifticonError.notFoundGifticonAtClipboard
+            self.clipboardImage = image
         }
+        if let url = pasteboard.url {
+            self.url = url
+        }
+        else {
+            self.error = GifticonError.notFoundGifticonAtClipboard
+        }
+    }
+    
+    func WebViewToImage(url:URL) {
+        
+        
+        
     }
  
 }
-

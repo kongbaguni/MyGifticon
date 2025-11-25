@@ -99,6 +99,9 @@ final class GifticonModel {
     /** 컬러 테그 */
     var tag: Int = 0
     
+    /** 참조 URL  */
+    var urlString : String = ""
+    
     @Transient
     var image: UIImage {
         get { UIImage(data: imageData) ?? UIImage() }

@@ -115,6 +115,22 @@ struct GifticonView : View {
         }
     }
     
+    var urlView: some View {
+        Group {
+            if !model.urlString.isEmpty {
+                Button {
+                    guard let url = URL(string: model.urlString) else {
+                        return
+                    }
+                    UIApplication.shared.open(url)
+                } label: {
+                    Text(model.urlString)
+                        .lineLimit(1)
+                }
+            }
+        }
+    }
+    
     var buttonView : some View {
         HStack {
             Spacer()
@@ -165,7 +181,7 @@ struct GifticonView : View {
                     
                     brandImageView
                     
-                    
+                    urlView
                     inputView
                     
                     infoView
@@ -184,6 +200,7 @@ struct GifticonView : View {
                     ScrollView {
                         barcodeView(width: proxy.size.width - 200)
                         inputView
+                        urlView
                     }
                     
                     VStack {
