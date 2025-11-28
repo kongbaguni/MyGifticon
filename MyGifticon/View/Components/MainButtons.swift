@@ -49,30 +49,41 @@ struct MainButtons: View {
         .frame(width: 40, height: 40)
     }
     
+    var timer : some View {
+        TimerView(time: .seconds(20)) {
+            isOpen = false
+        }
+    }
+    
     var button: some View {
-        HStack {
-            Spacer()
-            VStack(alignment: .trailing) {
-                KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
-                             title: .init("Import image from clipboard"),
-                             style: style) {
-                    onTouch()
+        VStack {
+            HStack(alignment:.bottom) {
+                Spacer()
+                VStack(alignment: .trailing) {
+                    KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
+                                 title: .init("Import image from clipboard"),
+                                 style: style) {
+                        onTouch()
+                        
+                    }
+                    
+                    PhotosPicker(
+                        selection: $photoPickerItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            KImageLabel(image: .init(systemName:"photo"),
+                                        title: .init("Select from photo library"),
+                                        style: style
+                            )
+                        }
                     
                 }
-                
-                PhotosPicker(
-                    selection: $photoPickerItem,
-                    matching: .images,
-                    photoLibrary: .shared()) {
-                        KImageLabel(image: .init(systemName:"photo"),
-                                    title: .init("Select from photo library"),
-                                    style: style
-                        )
-                    }
-
-            }
-            VStack {
+            }.padding(.horizontal)
+            HStack {
                 Spacer()
+                if isOpen {
+                    timer.frame(height:40)
+                }
                 minButton.safeGlassEffect(useInteractive: true, inShape: .circle)
             }
 
