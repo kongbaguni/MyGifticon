@@ -30,7 +30,7 @@ struct MainButtons: View {
         }
         .background {
             Circle()
-                .fill(.secondary.opacity(0.2))
+                .fill(.yellow.opacity(0.3))
         }
         .frame(width: 40, height: 40)
     }
@@ -44,15 +44,28 @@ struct MainButtons: View {
         }
         .background {
             Circle()
-                .fill(.secondary.opacity(0.2))
+                .fill(.teal.opacity(0.3))
         }
         .frame(width: 40, height: 40)
     }
     
-    var timer : some View {
+    var timerView : some View {
         TimerView(time: .seconds(20)) {
             isOpen = false
         }
+    }
+    
+    var bottomBtnView : some View {
+        HStack {
+            Spacer()
+            if isOpen {
+                timerView
+                minButton
+            }
+            else {
+                plusButton
+            }
+        }.frame(height: 50)
     }
     
     var button: some View {
@@ -81,30 +94,17 @@ struct MainButtons: View {
                 }
 
             }
-            HStack {
-                Spacer()
-                if isOpen {
-                    timer.frame(height:40)
-                }
-                minButton.safeGlassEffect(useInteractive: true, inShape: .circle)
-            }
 
         }
     }
     
     var body: some View {
-        Group {
+        VStack {
+            Spacer()
             if isOpen {
                 button
-            } else {
-                HStack {
-                    Spacer()
-                    VStack {
-                        Spacer()
-                        plusButton.safeGlassEffect(useInteractive: true, inShape: .circle)
-                    }
-                }
             }
+            bottomBtnView
         }
         .frame(height:200)
         .animation(.easeInOut, value: isOpen)
@@ -116,8 +116,11 @@ struct MainButtons: View {
 }
 
 #Preview {
-    MainButtons(photoPickerItem: .constant(nil)) {
-        
-    }
+    VStack {
+        Spacer()
+        MainButtons(photoPickerItem: .constant(nil)) {
+            
+        }
+    }.padding()
 
 }
