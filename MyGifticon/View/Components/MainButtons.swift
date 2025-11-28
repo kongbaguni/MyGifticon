@@ -33,6 +33,7 @@ struct MainButtons: View {
                 .fill(.yellow.opacity(0.3))
         }
         .frame(width: 40, height: 40)
+        .safeGlassEffect(inShape: Circle())
     }
     
     var plusButton : some View {
@@ -47,6 +48,7 @@ struct MainButtons: View {
                 .fill(.teal.opacity(0.3))
         }
         .frame(width: 40, height: 40)
+        .safeGlassEffect(inShape: Circle())
     }
     
     var timerView : some View {
