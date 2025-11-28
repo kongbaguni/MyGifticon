@@ -18,32 +18,25 @@ extension Duration {
 
 struct TimerView : View {
     let time: Duration
-    @State var addedTime:Duration = .zero
     
-    var totalTime:Duration {
-        time + addedTime
-    }
+    @State var 시작:Date = Date()
     
-    let 시작:Date = Date()
-
     var 경과시간:TimeInterval {
         시작.timeIntervalSince1970 - Date().timeIntervalSince1970
     }
     
     @State var 진행율:Double = 1.0
+    private let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+
     
-    func check() {
-        Task {
-            진행율 = 1 - (Double(경과시간 / totalTime.timeInterval) * -1)
-            if 진행율 < 0 {
-                진행율 = 0
-                onOver()
-                return
-            }
-            try await Task.sleep(for: .milliseconds(250))
-            check()
+    private func check() {
+        진행율 = 1 - (Double(경과시간 / time.timeInterval) * -1)
+        if 진행율 < 0 {
+            진행율 = 0
+            onOver()
         }
     }
+    
     let onOver:() -> Void
     
     func makeSafeFrameWidth(_ width:CGFloat)->CGFloat {
@@ -55,35 +48,38 @@ struct TimerView : View {
     }
     
     var body: some View {
-        Button {
-            addedTime = addedTime + .seconds(10)
-        } label: {
-            GeometryReader {proxy in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.yellow.opacity(0.2))
-                        .safeGlassEffect(inShape:
-                                            RoundedRectangle(cornerRadius: 10)
-                        )
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.teal.opacity(0.7))
-                        .frame(width: makeSafeFrameWidth(proxy.size.width - 20) , height: proxy.size.height * 0.5)
-                        .safeGlassEffect(inShape:
-                                            RoundedRectangle(cornerRadius: 10)
-                        )
-                    
-                        .padding(10)
-                    Text("\(Int(진행율 * 100))%")
-                        .padding(.horizontal,20)
-                        .font(.caption)
-                        .foregroundStyle(.white)
-                }
-                                
+        
+        GeometryReader {proxy in
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.yellow.opacity(0.2))
+                    .safeGlassEffect(inShape:
+                                        RoundedRectangle(cornerRadius: 10)
+                    )
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.teal.opacity(0.7))
+                    .frame(width: makeSafeFrameWidth(proxy.size.width - 20) , height: proxy.size.height * 0.5)
+                    .safeGlassEffect(inShape:
+                                        RoundedRectangle(cornerRadius: 10)
+                    )
+                
+                    .padding(10)
+                Text("\(Int(진행율 * 100))%")
+                    .padding(.horizontal,20)
+                    .font(.caption)
+                    .foregroundStyle(.white)
             }
+            
+            
         }
         .onAppear {
+            시작 = Date()
             check()
-        }.animation(.default, value: 진행율)
+        }
+        .onReceive(timer, perform: { output in
+            check()
+        })
+        .animation(.default, value: 진행율)
     }
     
 }
