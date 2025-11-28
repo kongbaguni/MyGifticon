@@ -60,25 +60,27 @@ struct MainButtons: View {
             HStack(alignment:.bottom) {
                 Spacer()
                 VStack(alignment: .trailing) {
-                    KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
-                                 title: .init("Import image from clipboard"),
-                                 style: style) {
-                        onTouch()
-                        
-                    }
-                    
-                    PhotosPicker(
-                        selection: $photoPickerItem,
-                        matching: .images,
-                        photoLibrary: .shared()) {
-                            KImageLabel(image: .init(systemName:"photo"),
-                                        title: .init("Select from photo library"),
-                                        style: style
-                            )
+                    Group {
+                        KImageButton(image: .init(systemName: "document.on.clipboard.fill"),
+                                     title: .init("Import image from clipboard"),
+                                     style: style) {
+                            onTouch()
                         }
-                    
+                        
+                        PhotosPicker(
+                            selection: $photoPickerItem,
+                            matching: .images,
+                            photoLibrary: .shared()) {
+                                KImageLabel(image: .init(systemName:"photo"),
+                                            title: .init("Select from photo library"),
+                                            style: style
+                                )
+                            }
+                    }.frame(height: 45)
+                        
                 }
-            }.padding(.horizontal)
+
+            }
             HStack {
                 Spacer()
                 if isOpen {
