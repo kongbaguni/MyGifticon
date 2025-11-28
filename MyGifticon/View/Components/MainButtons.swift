@@ -95,6 +95,9 @@ struct MainButtons: View {
         }
         .frame(height:200)
         .animation(.easeInOut, value: isOpen)
+        .onDisappear {
+            isOpen = false
+        }
         
     }
 }
