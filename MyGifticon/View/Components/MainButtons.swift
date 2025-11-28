@@ -33,7 +33,7 @@ struct MainButtons: View {
                 .fill(.yellow.opacity(0.3))
         }
         .frame(width: 40, height: 40)
-        .safeGlassEffect(inShape: Circle())
+        .safeGlassEffect(useInteractive: true, inShape: Circle())
     }
     
     var plusButton : some View {
@@ -48,7 +48,7 @@ struct MainButtons: View {
                 .fill(.teal.opacity(0.3))
         }
         .frame(width: 40, height: 40)
-        .safeGlassEffect(inShape: Circle())
+        .safeGlassEffect(useInteractive: true, inShape: Circle())
     }
     
     var timerView : some View {
@@ -61,7 +61,7 @@ struct MainButtons: View {
         HStack {
             Spacer()
             if isOpen {
-                timerView
+//                timerView
                 minButton
             }
             else {
