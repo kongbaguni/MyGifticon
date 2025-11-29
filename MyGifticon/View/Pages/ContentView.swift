@@ -52,20 +52,26 @@ struct ContentView: View {
     
     
     var adView : some View {
-        VStack(alignment: .trailing) {
-            HStack {
-                Text("version")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                Text.versionName
-                    .font(.body.bold())
-                    .foregroundStyle(.primary)
+        GeometryReader { geomentry in
+            VStack(alignment: .trailing) {
+                HStack {
+                    Text("version")
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                    Text.versionName
+                        .font(.body.bold())
+                        .foregroundStyle(.primary)
+                }
+                Spacer()
+                BannerAdView(sizeType: .AdSizeLargeBanner)
+                    .mask {
+                        RoundedRectangle(cornerRadius: 10)
+                    }
+                    .frame(width: geomentry.size.width)
+                
             }
-            Spacer()
-        }
-        .frame(height: 80)
-        .listRowSeparator(.hidden)
-//        TODO : AD here
+            .listRowSeparator(.hidden)
+        }.frame(height: 160)
     }
     var buttons: some View {
         MainButtons(photoPickerItem: $photoPickerItem) {

@@ -8,12 +8,18 @@
 import SwiftUI
 import SwiftData
 import FirebaseCore
+import GoogleMobileAds
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-
+      FirebaseApp.configure()
+      
+      MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [ "91ac842a45543bdb19f6b31decdf6240" ]
+      MobileAds.shared.start()
+      GoogleAdPrompt.promptWithDelay {
+          
+      }
     return true
   }
 }

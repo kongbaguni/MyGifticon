@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1B040AFC2EAAFEE200B95661 /* KongUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1B040AFB2EAAFEE200B95661 /* KongUIKit */; };
+		1B454D122EDB48B10065F24F /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 1B454D112EDB48B10065F24F /* GoogleMobileAds */; };
+		1B454D222EDB4B930065F24F /* ActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 1B454D212EDB4B930065F24F /* ActivityIndicatorView */; };
 		1B6C77572EB2D68F0092A6B6 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C77562EB2D68F0092A6B6 /* FirebaseAnalytics */; };
 		1B6C77592EB2D68F0092A6B6 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C77582EB2D68F0092A6B6 /* FirebaseAnalyticsCore */; };
 		1B6C775B2EB2D68F0092A6B6 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C775A2EB2D68F0092A6B6 /* FirebaseCore */; };
@@ -32,9 +34,22 @@
 		1B1CE1EF2E5498FD00E3FB2F /* MyGifticon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyGifticon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1B454D142EDB49690065F24F /* Exceptions for "MyGifticon" folder in "MyGifticon" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1B1CE1EE2E5498FD00E3FB2F /* MyGifticon */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1B1CE1F12E5498FD00E3FB2F /* MyGifticon */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1B454D142EDB49690065F24F /* Exceptions for "MyGifticon" folder in "MyGifticon" target */,
+			);
 			path = MyGifticon;
 			sourceTree = "<group>";
 		};
@@ -47,10 +62,12 @@
 			files = (
 				1B6C77572EB2D68F0092A6B6 /* FirebaseAnalytics in Frameworks */,
 				1B6C77592EB2D68F0092A6B6 /* FirebaseAnalyticsCore in Frameworks */,
+				1B454D222EDB4B930065F24F /* ActivityIndicatorView in Frameworks */,
 				1B6C775D2EB2D68F0092A6B6 /* FirebaseCrashlytics in Frameworks */,
 				1B6C775B2EB2D68F0092A6B6 /* FirebaseCore in Frameworks */,
 				1B040AFC2EAAFEE200B95661 /* KongUIKit in Frameworks */,
 				1BBA1CCE2EB87FC500CE60F0 /* Lottie in Frameworks */,
+				1B454D122EDB48B10065F24F /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +118,8 @@
 				1B6C775A2EB2D68F0092A6B6 /* FirebaseCore */,
 				1B6C775C2EB2D68F0092A6B6 /* FirebaseCrashlytics */,
 				1BBA1CCD2EB87FC500CE60F0 /* Lottie */,
+				1B454D112EDB48B10065F24F /* GoogleMobileAds */,
+				1B454D212EDB4B930065F24F /* ActivityIndicatorView */,
 			);
 			productName = MyGifticon;
 			productReference = 1B1CE1EF2E5498FD00E3FB2F /* MyGifticon.app */;
@@ -135,6 +154,8 @@
 				1B040AFA2EAAFEE200B95661 /* XCRemoteSwiftPackageReference "KongUIKit" */,
 				1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				1BBA1CCC2EB87FC500CE60F0 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				1B454D102EDB48B10065F24F /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				1B454D202EDB4B930065F24F /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1B1CE1F02E5498FD00E3FB2F /* Products */;
@@ -329,7 +350,9 @@
 				DEVELOPMENT_TEAM = QU9EPTU238;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyGifticon/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -362,7 +385,9 @@
 				DEVELOPMENT_TEAM = QU9EPTU238;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyGifticon/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -415,6 +440,22 @@
 				kind = branch;
 			};
 		};
+		1B454D102EDB48B10065F24F /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.14.0;
+			};
+		};
+		1B454D202EDB4B930065F24F /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/ActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.1;
+			};
+		};
 		1B6C77552EB2D68F0092A6B6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -438,6 +479,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1B040AFA2EAAFEE200B95661 /* XCRemoteSwiftPackageReference "KongUIKit" */;
 			productName = KongUIKit;
+		};
+		1B454D112EDB48B10065F24F /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B454D102EDB48B10065F24F /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+		1B454D212EDB4B930065F24F /* ActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B454D202EDB4B930065F24F /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */;
+			productName = ActivityIndicatorView;
 		};
 		1B6C77562EB2D68F0092A6B6 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
