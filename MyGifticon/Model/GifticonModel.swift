@@ -94,8 +94,10 @@ final class GifticonModel {
     var imageData: Data = Data()
     /** 저장일시 */
     var createdAt: Date = Date.now
-    /** 삭제처리 Flag */
-    var deleted: Bool = false
+    /** 사용 처리 */
+    var used: Bool = false
+    /** 사용 완료 시각 */
+    var usedDateTime : Date? = nil
     /** 컬러 테그 */
     var tag: Int = 0
     
@@ -176,7 +178,7 @@ final class GifticonModel {
             }
             memo += name
         }
-        self.deleted = false
+        self.used = false
         self.tag = 0
     }
     
@@ -185,10 +187,10 @@ final class GifticonModel {
 
 
 extension GifticonModel {
-    /** deleted 마크 된 기프티콘 일괄 삭제*/
-    static func deleteMarkedGifticons(context: ModelContext) throws {
+    /** 사용 완료한  기프티콘 일괄 삭제*/
+    static func deleteAllUsedGifticon(context: ModelContext) throws {
         let descriptor = FetchDescriptor<GifticonModel>(
-            predicate: #Predicate { $0.deleted == true }
+            predicate: #Predicate { $0.used == true }
         )
 
         let markedGifticons = try context.fetch(descriptor)

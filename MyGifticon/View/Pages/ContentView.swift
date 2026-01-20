@@ -89,7 +89,7 @@ struct ContentView: View {
                     Section("Gifticon") {
                         GifticonListView()
                     }
-                    DeletedGifticonListView()
+                    UsedGifticonListView()
                     
                     adView
                 }
@@ -123,7 +123,7 @@ struct ContentView: View {
                         }
                         ZStack {
                             List {
-                                DeletedGifticonListView()
+                                UsedGifticonListView()
                                 adView
                             }
                             VStack {

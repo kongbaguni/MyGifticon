@@ -20,6 +20,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
       GoogleAdPrompt.promptWithDelay {
           
       }
+    
     return true
   }
 }
@@ -30,23 +31,25 @@ struct MyGifticonApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            GifticonModel.self,
-        ])
-        let modelConfiguration = ModelConfiguration(
-            schema: schema,
-            isStoredInMemoryOnly: false,
-            allowsSave: true,
-            groupContainer: .identifier("group.net.kongbaguni.mygifticon"),
-            cloudKitDatabase: .private("myGifticon")
-        )
-
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let modelConfiguration = ModelConfiguration(
+                isStoredInMemoryOnly: false,
+                allowsSave: true,
+                groupContainer: .identifier("group.net.kongbaguni.mygifticon"),
+                cloudKitDatabase: .private("myGifticon")
+            )
+
+            let schema = Schema([GifticonModel.self])
+            return try ModelContainer(
+                for: schema,
+                migrationPlan: AppMigrationPlan.self,
+                configurations: [modelConfiguration]
+            )
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -55,3 +58,4 @@ struct MyGifticonApp: App {
         
     }
 }
+

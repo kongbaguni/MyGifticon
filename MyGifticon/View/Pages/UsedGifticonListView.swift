@@ -8,12 +8,12 @@
 import SwiftUI
 import SwiftData
 
-struct DeletedGifticonListView: View {
+struct UsedGifticonListView: View {
     @Environment(\.modelContext) private var modelContext
 
     @Query(
         filter: #Predicate<GifticonModel> {
-            $0.deleted == true
+            $0.used == true
         },
         sort: \GifticonModel.limitDateYMD,
         order: .reverse
@@ -25,7 +25,7 @@ struct DeletedGifticonListView: View {
     var body: some View {
         Group {
             if list.count > 0 {
-                Section("deleted") {
+                Section("used") {
                     ForEach(list) { model in
                         NavigationLink {
                             GifticonView(model: model, isNew: false, isDeleted: true)
@@ -44,18 +44,18 @@ struct DeletedGifticonListView: View {
                     Button {
                         confirmDelete = true
                     } label: {
-                        Label("clear deleted", systemImage: "trash")
+                        Label("clear used", systemImage: "trash")
                     }
                 }
             }
         }
         .alert(isPresented: $confirmDelete) {
-            .init(title: .init("clear deleted title"),
-                  message: .init("clear deleted message"),
+            .init(title: .init("clear used title"),
+                  message: .init("clear used message"),
                   primaryButton: .cancel(),
                   secondaryButton: .default(.init("delete"), action: {
                 do {
-                    try GifticonModel.deleteMarkedGifticons(context: modelContext)
+                    try GifticonModel.deleteAllUsedGifticon(context: modelContext)
                 } catch {
                     print(error.localizedDescription)
                 }

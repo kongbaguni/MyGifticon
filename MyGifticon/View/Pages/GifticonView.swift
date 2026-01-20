@@ -150,6 +150,16 @@ struct GifticonView : View {
                     }
             }
             else if isDeleted {
+                if let dt = model.usedDateTime {
+                    let str = dt
+                        .formatted(
+                            date: .numeric,
+                            time: .standard
+                        )
+                    Text(
+                        String(format: NSLocalizedString("used date time : %@", comment: "used label"), str)
+                    )
+                }
                 KImageButton(
                     image: .init(systemName: "arrow.uturn.backward.circle"),
                     title: .init("restore"),
@@ -160,7 +170,7 @@ struct GifticonView : View {
             }
             else {
                 KImageButton(
-                    image: .init(systemName: "trash"),
+                    image: .init(systemName: "checkmark.shield.fill"),
                     title: .init("delete"),
                     style: .simple) {
                         willDelete = true
@@ -227,10 +237,11 @@ struct GifticonView : View {
                 model.memo = memo
                 model.tag = tagItem?.id ?? 0
                 if isDeleted {
-                    model.deleted = willRestore ? false : true
+                    model.used = willRestore ? false : true
                 }
                 else if willDelete {
-                    model.deleted = true
+                    model.used = true
+                    model.usedDateTime = .now
                 }
                 try modelContext.save()
             } catch {

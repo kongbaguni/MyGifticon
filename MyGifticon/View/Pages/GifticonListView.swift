@@ -13,7 +13,7 @@ struct GifticonListView: View {
     @Environment(\.modelContext) private var modelContext
 
     @Query(
-        filter: #Predicate<GifticonModel> { $0.deleted == false },
+        filter: #Predicate<GifticonModel> { $0.used == false },
         sort: [SortDescriptor(\.limitDateYMD, order: .reverse)]
     )
     private var list: [GifticonModel]
@@ -38,7 +38,8 @@ struct GifticonListView: View {
         .onDelete { indexset in
             for index in indexset {
                 let item = filteredList[index]
-                item.deleted = true
+                item.used = true
+                item.usedDateTime = .now
             }
             do {
                 try self.modelContext.save()
