@@ -9,7 +9,7 @@ import SwiftUI
 import KongUIKit
 import SwiftData
 import KongUIKit
-
+import jkdsUtility
 
 fileprivate extension String {
     /// 문자열이 4자 이상이면 4글자씩 공백으로 구분해 반환
@@ -47,6 +47,14 @@ struct GifticonView : View {
     @State var tagItem: KSelectView.Item? = nil
     @State var willDelete:Bool = false
     @State var willRestore:Bool = false
+    @State var error:Error? = nil {
+        didSet {
+            if error != nil {
+                isAlert = true
+            }
+        }
+    }
+    @State var isAlert:Bool = false
     
     func barcodeView(width: CGFloat)-> some View {
         VStack(alignment: .center) {
@@ -140,13 +148,18 @@ struct GifticonView : View {
                     title: .init("save"),
                     style: .simple) {
                         do {
-                            modelContext.insert(model)
+                            try modelContext.insertIfNotExists(model: model)
                             try modelContext.save()
-                            dismiss()
                         } catch {
-                            // Handle save error (you might want to surface this to the UI)
-                            print("Failed to save model: \(error)")
+                            self.error = error
+                            Log
+                                .debug(
+                                    "Failed to save model",
+                                    error.localizedDescription
+                                )
+                            return
                         }
+                        dismiss()
                     }
             }
             else if isDeleted {
@@ -246,8 +259,11 @@ struct GifticonView : View {
                 }
                 try modelContext.save()
             } catch {
-                print("Failed to save model: \(error)")
+                Log.debug("Failed to save model: \(error)")
             }
+        }
+        .alert(isPresented: $isAlert) {
+            return .init(title: .init("alert"), message: .init(error?.localizedDescription ?? ""))
         }
 
     }

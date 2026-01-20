@@ -1,5 +1,5 @@
 {
-  "originHash" : "b80669003a0e5a3ee92dc1ff86eac7bfa7e6df87de2da37d7fbb511a530038d0",
+  "originHash" : "13d1f5d873c01e3b875623849be1bc9e9c7a3b288081a0616caaf519fa8c842b",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "36140867802ae4a1d2b11490bcbbefe058001d14",
         "version" : "1.2.1"
+      }
+    },
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "7be73f6c2b5cd90e40798b06ebd5da8f9f79cf88",
+        "version" : "5.11.0"
       }
     },
     {
@@ -98,6 +107,15 @@
       "state" : {
         "revision" : "040d087ac2267d2ddd4cca36c757d1c6a05fdbfe",
         "version" : "101.0.0"
+      }
+    },
+    {
+      "identity" : "jkdsutility",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JKDataSystems/jkdsUtility",
+      "state" : {
+        "branch" : "main",
+        "revision" : "15a562a30730fc81c8fd222e9788454a9b88556d"
       }
     },
     {

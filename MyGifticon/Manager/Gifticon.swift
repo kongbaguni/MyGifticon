@@ -7,6 +7,7 @@
 //
 import Vision
 import UIKit
+import jkdsUtility
 
 fileprivate extension String {
     func fixDatePattern(pattern:String)->String {
@@ -70,12 +71,15 @@ fileprivate extension String {
 enum GifticonError : LocalizedError {
     case notGifticonImage
     case notFoundGifticonAtClipboard
+    case alreadySavedGifticon
     var errorDescription: String? {
         switch self {
         case .notGifticonImage:
             return NSLocalizedString("notGifticonImage", comment: "error msg")
         case .notFoundGifticonAtClipboard:
             return NSLocalizedString("notFoundGifticonAtClipboard", comment: "error msg")
+        case .alreadySavedGifticon:
+            return NSLocalizedString( "alreadySavedGifticon", comment: "error msg")
         }
     }
 }
@@ -88,7 +92,7 @@ extension UIImage {
         
         let request = VNRecognizeTextRequest { request, error in
             guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
-                print("OCR 실패: \(error?.localizedDescription ?? "")")
+                Log.debug("OCR 실패: \(error?.localizedDescription ?? "")")
                 return
             }
             
@@ -108,7 +112,7 @@ extension UIImage {
             do {
                 try handler.perform([request])
             } catch {
-                print("OCR 핸들러 에러: \(error.localizedDescription)")
+                Log.debug("OCR 핸들러 에러: \(error.localizedDescription)")
             }
         }
     }
@@ -119,7 +123,7 @@ extension UIImage {
         
         let request = VNDetectBarcodesRequest { request, error in
             guard let results = request.results as? [VNBarcodeObservation], error == nil else {
-                print("바코드 인식 실패: \(error?.localizedDescription ?? "")")
+                Log.debug("바코드 인식 실패: \(error?.localizedDescription ?? "")")
                 return
             }
             
@@ -140,7 +144,7 @@ extension UIImage {
             do {
                 try handler.perform([request])
             } catch {
-                print("바코드 핸들러 에러: \(error.localizedDescription)")
+                Log.debug("바코드 핸들러 에러: \(error.localizedDescription)")
             }
         }
     }

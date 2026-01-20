@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import jkdsUtility
 
 struct UsedGifticonListView: View {
     @Environment(\.modelContext) private var modelContext
@@ -57,7 +58,7 @@ struct UsedGifticonListView: View {
                 do {
                     try GifticonModel.deleteAllUsedGifticon(context: modelContext)
                 } catch {
-                    print(error.localizedDescription)
+                    Log.debug(error.localizedDescription)
                 }
 
             }))

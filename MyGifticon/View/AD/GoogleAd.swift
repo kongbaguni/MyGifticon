@@ -10,6 +10,7 @@ import UIKit
 import SwiftUI
 import GoogleMobileAds
 import AppTrackingTransparency
+import jkdsUtility
 
 #if DEBUG
 fileprivate let bannerGaId = "ca-app-pub-3940256099942544/2934735716" // test ga id
@@ -33,7 +34,7 @@ class GoogleAd : NSObject {
     var interstitial:RewardedAd? = nil
     func requestTrackingAuthorization(complete:@escaping()->Void) {
         ATTrackingManager.requestTrackingAuthorization { status in
-            print("google ad tracking status : \(status)")
+            Log.debug("google ad tracking status : \(status)")
             complete()
         }
     }
@@ -46,22 +47,22 @@ class GoogleAd : NSObject {
 extension GoogleAd : FullScreenContentDelegate {
     //광고 실패
     func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-        print("google ad \(#function)")
-        print(error.localizedDescription)
+        Log.debug("google ad \(#function)")
+        Log.debug(error.localizedDescription)
         DispatchQueue.main.async {
             self.callback(true, nil)
         }
     }
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {
-        print("google ad \(#function)")
+        Log.debug("google ad \(#function)")
     }
     //광고시작
     func adDidRecordImpression(_ ad: FullScreenPresentingAd) {
-        print("google ad \(#function)")
+        Log.debug("google ad \(#function)")
     }
     //광고 종료
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
-        print("google ad \(#function)")        
+        Log.debug("google ad \(#function)")
         DispatchQueue.main.async {
             self.callback(true, nil)
         }
@@ -81,7 +82,7 @@ struct GoogleAdBannerView: UIViewRepresentable {
   
     func updateUIView(_ uiView: BannerView, context: Context) {
         uiView.load(Request())
-        print("GADBannerViewDelegate \(#function) \(#line)")
+        Log.debug("GADBannerViewDelegate \(#function) \(#line)")
         NotificationCenter.default.post(name: .adBannerLoadingStart, object: nil)
         uiView.delegate = delegate
         if isRegObserver == false  {
@@ -104,7 +105,7 @@ struct GoogleAdBannerView: UIViewRepresentable {
 
 class GoogleAdBannerViewDelegate : NSObject, BannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: BannerView) {
-        print("GADBannerViewDelegate \(#function) \(#line)")
+        Log.debug("GADBannerViewDelegate \(#function) \(#line)")
         NotificationCenter.default.post(name: .adBannerLoadingFinish, object: nil)
     }
 //    func bannerViewDidRecordClick(_ bannerView: GADBannerView) {
@@ -123,7 +124,7 @@ class GoogleAdBannerViewDelegate : NSObject, BannerViewDelegate {
 //
 //    }
     func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: Error) {
-        print("GADBannerViewDelegate \(#function) \(#line)")
+        Log.debug("GADBannerViewDelegate \(#function) \(#line)")
         NotificationCenter.default.post(name: .adBannerLoadingFail, object: error)
     }
 }

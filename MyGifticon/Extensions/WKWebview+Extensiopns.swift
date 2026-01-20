@@ -7,6 +7,7 @@
 
 import WebKit
 import UIKit
+import jkdsUtility
 
 extension WKWebView {
     func takeFullSnapshot(completion: @escaping (UIImage?) -> Void) {
@@ -16,7 +17,7 @@ extension WKWebView {
 
         self.takeSnapshot(with: config) { image, error in
             if let error = error {
-                print("Snapshot error:", error)
+                Log.debug("Snapshot error:", error)
             }
             completion(image)
         }

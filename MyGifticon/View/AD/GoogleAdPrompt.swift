@@ -9,9 +9,11 @@ import Foundation
 import UIKit
 import UserMessagingPlatform
 import AppTrackingTransparency
+import jkdsUtility
+
 fileprivate func requestTrackingAuthorization(complete:@escaping()->Void) {
     ATTrackingManager.requestTrackingAuthorization { status in
-        print("google ad tracking status : \(status)")
+        Log.debug("google ad tracking status : \(status)")
         complete()
     }
 }
@@ -71,7 +73,7 @@ fileprivate func userMessagePlatformPrompt(complete:@escaping()->Void) {
         completionHandler: { error in
             if error != nil {
                 // Handle the error.
-                print(error!.localizedDescription)
+                Log.debug(error!.localizedDescription)
             } else {
                 let formStatus = ConsentInformation.shared.formStatus
                 if formStatus == FormStatus.available {

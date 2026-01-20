@@ -7,6 +7,7 @@
 
 import SwiftUI
 import KongUIKit
+import jkdsUtility
 
 extension Duration {
     var timeInterval: TimeInterval {
@@ -87,7 +88,7 @@ struct TimerView : View {
 #Preview {
     VStack {
         TimerView(time: .seconds(20)) {
-            print("End")
+            Log.debug("End")
         }
         .frame(height: 50)
         .padding()

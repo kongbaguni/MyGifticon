@@ -15,6 +15,7 @@
 		1B6C775B2EB2D68F0092A6B6 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C775A2EB2D68F0092A6B6 /* FirebaseCore */; };
 		1B6C775D2EB2D68F0092A6B6 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1B6C775C2EB2D68F0092A6B6 /* FirebaseCrashlytics */; };
 		1BBA1CCE2EB87FC500CE60F0 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1BBA1CCD2EB87FC500CE60F0 /* Lottie */; };
+		1BD5E5872F1F5F6100DEA6F0 /* jkdsUtility in Frameworks */ = {isa = PBXBuildFile; productRef = 1BD5E5862F1F5F6100DEA6F0 /* jkdsUtility */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +67,7 @@
 				1B6C775D2EB2D68F0092A6B6 /* FirebaseCrashlytics in Frameworks */,
 				1B6C775B2EB2D68F0092A6B6 /* FirebaseCore in Frameworks */,
 				1B040AFC2EAAFEE200B95661 /* KongUIKit in Frameworks */,
+				1BD5E5872F1F5F6100DEA6F0 /* jkdsUtility in Frameworks */,
 				1BBA1CCE2EB87FC500CE60F0 /* Lottie in Frameworks */,
 				1B454D122EDB48B10065F24F /* GoogleMobileAds in Frameworks */,
 			);
@@ -120,6 +122,7 @@
 				1BBA1CCD2EB87FC500CE60F0 /* Lottie */,
 				1B454D112EDB48B10065F24F /* GoogleMobileAds */,
 				1B454D212EDB4B930065F24F /* ActivityIndicatorView */,
+				1BD5E5862F1F5F6100DEA6F0 /* jkdsUtility */,
 			);
 			productName = MyGifticon;
 			productReference = 1B1CE1EF2E5498FD00E3FB2F /* MyGifticon.app */;
@@ -156,6 +159,7 @@
 				1BBA1CCC2EB87FC500CE60F0 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				1B454D102EDB48B10065F24F /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				1B454D202EDB4B930065F24F /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
+				1BD5E5852F1F5F6100DEA6F0 /* XCRemoteSwiftPackageReference "jkdsUtility" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1B1CE1F02E5498FD00E3FB2F /* Products */;
@@ -472,6 +476,14 @@
 				minimumVersion = 4.5.2;
 			};
 		};
+		1BD5E5852F1F5F6100DEA6F0 /* XCRemoteSwiftPackageReference "jkdsUtility" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JKDataSystems/jkdsUtility";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -514,6 +526,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1BBA1CCC2EB87FC500CE60F0 /* XCRemoteSwiftPackageReference "lottie-spm" */;
 			productName = Lottie;
+		};
+		1BD5E5862F1F5F6100DEA6F0 /* jkdsUtility */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1BD5E5852F1F5F6100DEA6F0 /* XCRemoteSwiftPackageReference "jkdsUtility" */;
+			productName = jkdsUtility;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

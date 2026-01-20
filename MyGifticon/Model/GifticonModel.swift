@@ -191,7 +191,9 @@ extension GifticonModel {
     /** 사용 완료한  기프티콘 일괄 삭제*/
     static func deleteAllUsedGifticon(context: ModelContext) throws {
         let descriptor = FetchDescriptor<GifticonModel>(
-            predicate: #Predicate { $0.used == true }
+            predicate: #Predicate<GifticonModel> { model in
+                model.used == true
+            }
         )
 
         let markedGifticons = try context.fetch(descriptor)
@@ -206,19 +208,20 @@ extension GifticonModel {
 
 
 extension ModelContext {
-    func insertIfNotExists(model: GifticonModel)->Error? {
+    func insertIfNotExists(model: GifticonModel) throws {
+        let barcode = model.barcode
         let descriptor = FetchDescriptor<GifticonModel>(
-            predicate: #Predicate { $0.barcode == model.barcode }
-        )
-        do {
-            let exists = try self.fetch(descriptor).isEmpty == false
-            if !exists {
-                self.insert(model)
-                return nil
+            predicate: #Predicate<GifticonModel> { item in
+                item.barcode == barcode
             }
-        }
-        catch {            
-            return error
+        )
+        
+        let exists = try self.fetch(descriptor).isEmpty == false
+        if !exists {
+            self.insert(model)
+        } else {
+            throw GifticonError.alreadySavedGifticon
         }
     }
 }
+

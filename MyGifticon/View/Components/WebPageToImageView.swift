@@ -8,6 +8,7 @@
 
 import SwiftUI
 import WebKit
+import jkdsUtility
 
 struct WebPageToImageView: UIViewRepresentable {
     let url: URL
@@ -48,7 +49,7 @@ struct WebPageToImageView: UIViewRepresentable {
 #Preview {
     VStack {
         WebPageToImageView(url: URL(string:"https://google.com")!, onSnapshot: { image in
-            print(image?.size ?? .zero)
+            Log.debug(image?.size ?? .zero)
         })
     }
 }
