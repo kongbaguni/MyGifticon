@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Consts {
     static let brands: [String] = [
@@ -41,7 +42,6 @@ struct Consts {
         "미니스톱",
         "이마트24",
         "이마트",
-        "GS칼텍스",
         "커피빈",
         "탐앤탐스",
         "할리스커피",
@@ -55,7 +55,11 @@ struct Consts {
         "폴바셋",
         "다이소",
         "홈플러스",
-        "KFC"
+        "KFC",
+        "GS칼텍스",
+        "에스오일",
+        "HD현대오일뱅크",
+        "SK에너지",
     ]
     
     static let menuKeywords: [[String]] = [
@@ -222,4 +226,26 @@ struct Consts {
             "교환권"
         ]
     ]
+}
+
+struct Preview : View {
+    var body: some View {
+        List {
+            Section("Brands") {
+                ForEach(Consts.brands, id:\.self) { braand in
+                    HStack {
+                        Image("logo_\(braand)")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30)
+                        Text(braand)
+                            .foregroundStyle(.primary)
+                    }
+                }
+            }
+        }
+    }
+}
+#Preview {
+    Preview()
 }
