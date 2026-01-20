@@ -53,6 +53,7 @@ enum AppMigrationPlan: SchemaMigrationPlan {
                     
                 }
             )
+            
         ]
     }
 }

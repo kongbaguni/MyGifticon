@@ -175,6 +175,7 @@ struct GifticonView : View {
                     style: .simple) {
                         willDelete = true
                         dismiss()
+                        dismiss()
                     }
             }
         }

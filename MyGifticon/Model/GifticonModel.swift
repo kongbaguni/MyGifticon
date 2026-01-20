@@ -81,13 +81,14 @@ final class GifticonModel {
         .init(id: 4, color: .blue),
         .init(id: 5, color: .purple)
     ]
+    /** 기프티콘에서 추출한 바코드의 문자열 */
+    var barcode: String = ""
 
     /** 기프티콘에서 추출한 문자열 */
     var title: String = ""
     /** 사용자가 작성하는 메모 */
     var memo: String = ""
-    /** 기프티콘에서 추출한 바코드의 문자열 */
-    var barcode: String = ""
+    
     /** 기프티콘에서 추출한 유효기간 종료일 */
     var limitDateYMD: String = ""
     /** 기츠티콘 이미지 저장 */
@@ -200,5 +201,24 @@ extension GifticonModel {
         }
 
         try context.save()
+    }
+}
+
+
+extension ModelContext {
+    func insertIfNotExists(model: GifticonModel)->Error? {
+        let descriptor = FetchDescriptor<GifticonModel>(
+            predicate: #Predicate { $0.barcode == model.barcode }
+        )
+        do {
+            let exists = try self.fetch(descriptor).isEmpty == false
+            if !exists {
+                self.insert(model)
+                return nil
+            }
+        }
+        catch {            
+            return error
+        }
     }
 }
