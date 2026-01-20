@@ -170,8 +170,8 @@ struct GifticonView : View {
             }
             else {
                 KImageButton(
-                    image: .init(systemName: "checkmark.shield.fill"),
-                    title: .init("delete"),
+                    image: .init(systemName: "checkmark.shield"),
+                    title: .init("use"),
                     style: .simple) {
                         willDelete = true
                         dismiss()
