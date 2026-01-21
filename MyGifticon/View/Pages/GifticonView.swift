@@ -210,7 +210,10 @@ struct GifticonView : View {
     var mapView : some View {
         Group {
             if let location = model.usedLocation {
-                MapView(location: location)
+                MapView(
+                    location: location,
+                    title: NSLocalizedString("used location", comment: "기프티콘 사용 처리한 위치 표시")
+                )
             }
         }
     }

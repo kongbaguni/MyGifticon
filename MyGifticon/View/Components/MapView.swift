@@ -11,11 +11,13 @@ import CoreLocation
 struct MapView: View {
 
     let location: CLLocation
-
+    let title:String
+    
     @State private var position: MapCameraPosition
 
-    init(location: CLLocation) {
+    init(location: CLLocation, title:String) {
         self.location = location
+        self.title = title
         self._position = State(
             initialValue: .region(
                 MKCoordinateRegion(
@@ -31,7 +33,7 @@ struct MapView: View {
 
     var body: some View {
         Map(position: $position) {
-            Marker("위치", coordinate: location.coordinate)
+            Marker(title, coordinate: location.coordinate)
         }
         .mapStyle(.standard)
         .ignoresSafeArea(edges: .all)
@@ -39,5 +41,7 @@ struct MapView: View {
 }
 
 #Preview {
-    MapView(location: .init(latitude: 37.7749, longitude: -122.4194))
+    MapView(location: .init(latitude: 37.7749, longitude: -122.4194),
+            title: NSLocalizedString("location", comment: "test")
+    )
 }
