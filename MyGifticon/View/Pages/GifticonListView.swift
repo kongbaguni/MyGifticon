@@ -35,18 +35,18 @@ struct GifticonListView: View {
                 GifticonListRowView(model: model)
             }
         }
-        .onDelete { indexset in
-            for index in indexset {
-                let item = filteredList[index]
-                item.used = true
-                item.usedDateTime = .now
-            }
-            do {
-                try self.modelContext.save()
-            } catch {                
-                fatalError(error.localizedDescription)
-            }
-        }
+//        .onDelete { indexset in
+//            for index in indexset {
+//                let item = filteredList[index]
+//                item.used = true
+//                item.usedDateTime = .now
+//            }
+//            do {
+//                try self.modelContext.save()
+//            } catch {                
+//                fatalError(error.localizedDescription)
+//            }
+//        }
     }
     
 //    var iconTestListView: some View {

@@ -30,8 +30,17 @@ fileprivate extension String {
             .addingTimeInterval(0) // 선택적: 명시적 0초 추가
     }
     
-    var getBrandName: String? {
-        let detectedBrand = Consts.brands.first { self.contains($0) }
+    var getBrandName: String? {        
+        let detectedBrand: String? = Consts.brands
+            .compactMap { brand -> (brand: String, index: String.Index)? in
+                guard let range = self.range(
+                    of: brand,
+                    options: .caseInsensitive
+                ) else { return nil }
+                return (brand, range.lowerBound)
+            }
+            .min { $0.index < $1.index }
+            .map { $0.brand.uppercased() }
         return detectedBrand
     }
     
