@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct TabItem {
+struct TabItem : Equatable {
+    static func == (lhs: TabItem, rhs: TabItem) -> Bool {
+        lhs.id == rhs.id
+    }
     let id: Int
     let title: Text
 }
