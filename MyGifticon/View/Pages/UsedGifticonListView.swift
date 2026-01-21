@@ -29,7 +29,7 @@ struct UsedGifticonListView: View {
                 Section("used") {
                     ForEach(list) { model in
                         NavigationLink {
-                            GifticonView(model: model, isNew: false, isDeleted: true)
+                            GifticonView(model: model, isNew: false, isUsed: true)
                         } label: {
                             GifticonListRowView(model: model)
                         }

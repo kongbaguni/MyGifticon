@@ -41,7 +41,7 @@ struct GifticonView : View {
     @Environment(\.modelContext) private var modelContext
     let model: GifticonModel
     let isNew:Bool
-    let isDeleted:Bool
+    let isUsed:Bool
     
     @State var memo:String = ""
     @State var tagItem: KSelectView.Item? = nil
@@ -59,15 +59,15 @@ struct GifticonView : View {
     func barcodeView(width: CGFloat)-> some View {
         VStack(alignment: .center) {
             KBarcodeView(text: model.barcode, conerRadius: 20)
-                .blur(radius: isDeleted ? 3 : 0)
-                .padding(isDeleted ? 5 : 0)
+                .blur(radius: isUsed ? 3 : 0)
+                .padding(isUsed ? 5 : 0)
 
 
             HStack (alignment: .center) {
                 Text(model.barcode.groupedBy4)
                     .font(.headline)
                     .foregroundStyle(.black)
-                    .blur(radius: isDeleted ? 3 : 0)
+                    .blur(radius: isUsed ? 3 : 0)
                 
                 NavigationLink {
                     Image(uiImage: model.image)
@@ -100,10 +100,15 @@ struct GifticonView : View {
     
     var inputView : some View {
         VStack {
-            TextField(text: $memo) {
-                Text("memo")
-            }.textFieldStyle(.roundedBorder)
-            KSelectView(items: GifticonModel.tags, selected: $tagItem)
+            if isUsed {
+                Text(memo)
+                    .font(.largeTitle)
+            } else {
+                TextField(text: $memo) {
+                    Text("memo")
+                }.textFieldStyle(.roundedBorder)
+                KSelectView(items: GifticonModel.tags, selected: $tagItem)
+            }
 
         }
     }
@@ -162,7 +167,7 @@ struct GifticonView : View {
                         dismiss()
                     }
             }
-            else if isDeleted {
+            else if isUsed {
                 if let dt = model.usedDateTime {
                     let str = dt
                         .formatted(
@@ -172,6 +177,9 @@ struct GifticonView : View {
                     Text(
                         String(format: NSLocalizedString("used date time : %@", comment: "used label"), str)
                     )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    Spacer()
                 }
                 KImageButton(
                     image: .init(systemName: "arrow.uturn.backward.circle"),
@@ -250,7 +258,7 @@ struct GifticonView : View {
             do {
                 model.memo = memo
                 model.tag = tagItem?.id ?? 0
-                if isDeleted {
+                if isUsed {
                     model.used = willRestore ? false : true
                 }
                 else if willDelete {
@@ -270,7 +278,7 @@ struct GifticonView : View {
 }
 
 #Preview {
-    GifticonView(model: .init(title: "투썸플레이스 치즈케이크 test", barcode: "124312", limitDate: "2026.04.04", image: .init(systemName: "circle")!), isNew: true, isDeleted: false)
+    GifticonView(model: .init(title: "투썸플레이스 치즈케이크 test", barcode: "124312", limitDate: "2026.04.04", image: .init(systemName: "circle")!), isNew: true, isUsed: false)
     
     
 }

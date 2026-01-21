@@ -30,7 +30,7 @@ struct GifticonListView: View {
     var listView: some View {
         ForEach(filteredList, id: \.self) { model in
             NavigationLink {
-                GifticonView(model: model, isNew: false, isDeleted: false)
+                GifticonView(model: model, isNew: false, isUsed: false)
             } label: {
                 GifticonListRowView(model: model)
             }

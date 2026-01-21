@@ -48,7 +48,7 @@ struct GifticonListRowView: View {
                 
                 let model:GifticonModel = .init(title: "\(brand) 2027.12.20 아메리카노", barcode: "123123123", limitDate: "2025.11.20", image: .init())
                 NavigationLink {
-                    GifticonView(model:model, isNew: false, isDeleted: false)
+                    GifticonView(model:model, isNew: false, isUsed: false)
                     
                 } label: {
                     GifticonListRowView(model: model)
