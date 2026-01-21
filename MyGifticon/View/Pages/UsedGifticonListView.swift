@@ -23,6 +23,18 @@ struct UsedGifticonListView: View {
     private var list: [GifticonModel]
     @State var confirmDelete: Bool = false
     
+    var locationItem : [MapViewWithMultipleLocationInfo.Info] {
+        list.map { model in
+            return MapViewWithMultipleLocationInfo
+                .Info(title: model.brandName ?? "",
+                      location: model.usedLocation ?? .init())
+        }
+    }
+    
+    var mapView : some View {
+        MapViewWithMultipleLocationInfo(infos: locationItem)
+    }
+    
     var body: some View {
         Group {
             if list.count > 0 {
@@ -47,6 +59,10 @@ struct UsedGifticonListView: View {
                     } label: {
                         Label("clear used", systemImage: "trash")
                     }
+                }
+                Section {
+                    mapView
+                        .frame(height: 300)
                 }
             }
         }

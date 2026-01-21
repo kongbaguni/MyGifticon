@@ -8,7 +8,7 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
-struct MapView: View {
+struct MapViewWithSingleLocationInfo: View {
 
     let location: CLLocation
     let title:String
@@ -41,7 +41,7 @@ struct MapView: View {
 }
 
 #Preview {
-    MapView(location: .init(latitude: 37.7749, longitude: -122.4194),
+    MapViewWithSingleLocationInfo(location: .init(latitude: 37.7749, longitude: -122.4194),
             title: NSLocalizedString("location", comment: "test")
     )
 }
