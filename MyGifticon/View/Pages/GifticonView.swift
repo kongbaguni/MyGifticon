@@ -10,6 +10,7 @@ import KongUIKit
 import SwiftData
 import KongUIKit
 import jkdsUtility
+import CoreLocation
 
 fileprivate extension String {
     /// 문자열이 4자 이상이면 4글자씩 공백으로 구분해 반환
@@ -32,7 +33,7 @@ fileprivate extension String {
 struct GifticonView : View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    
+    let locationManager = LocationManager()
     var isLandscape: Bool {
         horizontalSizeClass == .regular && verticalSizeClass == .compact
     }
@@ -45,7 +46,7 @@ struct GifticonView : View {
     
     @State var memo:String = ""
     @State var tagItem: KSelectView.Item? = nil
-    @State var willDelete:Bool = false
+    @State var willUsed:Bool = false
     @State var willRestore:Bool = false
     @State var error:Error? = nil {
         didSet {
@@ -55,6 +56,7 @@ struct GifticonView : View {
         }
     }
     @State var isAlert:Bool = false
+    @State var location:CLLocation? = nil
     
     func barcodeView(width: CGFloat)-> some View {
         VStack(alignment: .center) {
@@ -194,15 +196,24 @@ struct GifticonView : View {
                     image: .init(systemName: "checkmark.shield"),
                     title: .init("use"),
                     style: .simple) {
-                        willDelete = true
-                        dismiss()
-                        dismiss()
+                        locationManager.getLocation { location in
+                            self.location = location
+                            self.willUsed = true
+                            dismiss()
+                        }
                     }
             }
         }
         .frame(height: 90)
     }
     
+    var mapView : some View {
+        Group {
+            if let location = model.usedLocation {
+                MapView(location: location)
+            }
+        }
+    }
     var body: some View {
         GeometryReader { proxy in
             if !isLandscape {
@@ -217,7 +228,7 @@ struct GifticonView : View {
                     inputView
                     
                     infoView
-                    
+                    mapView
                     Spacer()
                     buttonView
                 }
@@ -261,8 +272,13 @@ struct GifticonView : View {
                 if isUsed {
                     model.used = willRestore ? false : true
                 }
-                else if willDelete {
+                else if willUsed {
                     model.used = true
+                    if let location = self.location {
+                        model.used_latitude = location.coordinate.latitude
+                        model.used_longitude = location.coordinate.longitude
+                        model.hasLocation = true
+                    }
                     model.usedDateTime = .now
                 }
                 try modelContext.save()

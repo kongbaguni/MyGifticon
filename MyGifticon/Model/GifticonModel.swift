@@ -8,6 +8,7 @@ import UIKit
 import SwiftUI
 import SwiftData
 import KongUIKit
+import CoreLocation
 
 fileprivate extension String {
     var dateValue:Date? {
@@ -30,7 +31,7 @@ fileprivate extension String {
             .addingTimeInterval(0) // 선택적: 명시적 0초 추가
     }
     
-    var getBrandName: String? {        
+    var getBrandName: String? {
         let detectedBrand: String? = Consts.brands
             .compactMap { brand -> (brand: String, index: String.Index)? in
                 guard let range = self.range(
@@ -111,6 +112,12 @@ final class GifticonModel {
     /** 컬러 테그 */
     var tag: Int = 0
     
+    /** 사용 완료 위치 위도 */
+    var used_latitude : Double = 0.0
+    /** 사용 완료 위치 경도 */
+    var used_longitude : Double = 0.0
+    /** 위지청보 가지고 있나? */
+    var hasLocation: Bool = false
     /** 참조 URL  */
     var urlString : String = ""
     
@@ -169,6 +176,14 @@ final class GifticonModel {
         get {
             title.getMenuName
         }
+    }
+    
+    @Transient
+    var usedLocation : CLLocation? {
+        if hasLocation == false {
+            return nil
+        }
+        return .init(latitude: used_latitude, longitude: used_longitude)
     }
     
     // Required initializer for @Model types
