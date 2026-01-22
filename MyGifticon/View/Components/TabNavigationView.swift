@@ -7,23 +7,15 @@
 
 import SwiftUI
 
-struct TabItem : Equatable {
-    static func == (lhs: TabItem, rhs: TabItem) -> Bool {
-        lhs.id == rhs.id
-    }
-    let id: Int
-    let title: Text
-}
-
 struct TabNavigationView : View {
-    let items: [TabItem]
+    let items: [Text]
     @Binding var selection: Int
     
     var body: some View {
         HStack {
-            ForEach(items, id: \.id) { (item: TabItem) in
-                Button(action: { selection = item.id }) {
-                    tabLabel(for: item)
+            ForEach(items.indices, id: \.self) { idx in
+                Button(action: { selection = idx }) {
+                    tabLabel(for: idx)
                 }
                 .buttonStyle(.plain)
             }
@@ -31,9 +23,9 @@ struct TabNavigationView : View {
     }
     
     @ViewBuilder
-    private func tabLabel(for item: TabItem) -> some View {
-        let isSelected = (selection == item.id)
-        item.title
+    private func tabLabel(for idx:Int) -> some View {
+        let isSelected = (selection == idx)
+        items[idx]
             .fontWeight(isSelected ? .bold : .regular)
             .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
             .padding(.vertical, 8)
@@ -48,14 +40,14 @@ struct TabNavigationView : View {
 #Preview {
     VStack {
         TabNavigationView(items: [
-            .init(id: 0, title: .init("a")),
-            .init(id: 1, title: .init("b")),
-            .init(id: 2, title: .init("c")),
+            .init("a"),
+            .init("b"),
+            .init("c"),
         ], selection: .constant(0))
         TabNavigationView(items: [
-            .init(id: 0, title: .init("a")),
-            .init(id: 1, title: .init("b")),
-            .init(id: 2, title: .init("c")),
+            .init("a"),
+            .init("b"),
+            .init("c"),
         ], selection: .constant(2))
     }
 }

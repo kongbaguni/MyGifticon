@@ -55,13 +55,30 @@ struct GifticonListView: View {
 //        }
 //    }
     
+    var version : some View {
+        HStack {
+            Text("version")
+                .font(.body)
+                .foregroundStyle(.secondary)
+            Text.versionName
+                .font(.body.bold())
+                .foregroundStyle(.primary)
+        }
+    }
+    
     var body: some View {
-        Group {
-            KSelectView(items: GifticonModel.tags, canCancel: true, selected: $selectedTag)
-            if selectedTag != nil && filteredList.isEmpty {
-                Text("empty list msg when tag is selected")
+        List {
+            Section {
+                KSelectView(items: GifticonModel.tags, canCancel: true, selected: $selectedTag)
+                if selectedTag != nil && filteredList.isEmpty {
+                    Text("empty list msg when tag is selected")
+                }
+                listView
             }
-            listView
+            
+            Section {
+                version
+            }
         }
         .onAppear {
             if selectedTagRaw > -1 {

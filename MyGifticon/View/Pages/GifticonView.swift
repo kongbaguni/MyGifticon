@@ -209,11 +209,13 @@ struct GifticonView : View {
     
     var mapView : some View {
         Group {
-            if let location = model.usedLocation {
-                MapViewWithSingleLocationInfo(
-                    location: location,
-                    title: NSLocalizedString("used location", comment: "기프티콘 사용 처리한 위치 표시")
-                )
+            if model.used {
+                if let location = model.usedLocation {
+                    MapViewWithSingleLocationInfo(
+                        location: location,
+                        title: NSLocalizedString("used location", comment: "기프티콘 사용 처리한 위치 표시")
+                    )
+                }
             }
         }
     }
@@ -285,6 +287,8 @@ struct GifticonView : View {
                     model.usedDateTime = .now
                 }
                 try modelContext.save()
+                NotificationCenter.default
+                    .post(name: .didChangeUsedGifticon, object: model.used)
             } catch {
                 Log.debug("Failed to save model: \(error)")
             }

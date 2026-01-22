@@ -33,36 +33,38 @@ struct UsedGifticonListView: View {
     
     var mapView : some View {
         MapViewWithMultipleLocationInfo(infos: locationItem)
+            .frame(height: 500)
     }
     
     var body: some View {
-        Group {
-            if list.count > 0 {
-                Section("used") {
-                    ForEach(list) { model in
-                        NavigationLink {
-                            GifticonView(model: model, isNew: false, isUsed: true)
-                        } label: {
-                            GifticonListRowView(model: model)
-                        }
-                        
-                    }
-                    .onDelete { indexset in
-                        for index in indexset {
-                            let item = list[index]
-                            self.modelContext.delete(item)
-                        }
-                        try? self.modelContext.save()
-                    }
-                    Button {
-                        confirmDelete = true
+        List {
+            Section {
+                ForEach(list) { model in
+                    NavigationLink {
+                        GifticonView(model: model, isNew: false, isUsed: true)
                     } label: {
-                        Label("clear used", systemImage: "trash")
+                        GifticonListRowView(model: model)
                     }
+                    
                 }
+                .onDelete { indexset in
+                    for index in indexset {
+                        let item = list[index]
+                        self.modelContext.delete(item)
+                    }
+                    try? self.modelContext.save()
+                }
+            }
+            if list.count > 0 {
                 Section {
                     mapView
-                        .frame(height: 300)
+                }
+            }
+            Section {
+                Button {
+                    confirmDelete = true
+                } label: {
+                    Label("clear used", systemImage: "trash")
                 }
             }
         }

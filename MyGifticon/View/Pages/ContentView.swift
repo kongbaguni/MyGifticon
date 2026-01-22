@@ -66,28 +66,18 @@ struct ContentView: View {
     @State private var url:URL? = nil
     
     @State private var tabIdx:Int = 0
+   
     
     var adView : some View {
         GeometryReader { geomentry in
             VStack(alignment: .trailing) {
-                HStack {
-                    Text("version")
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                    Text.versionName
-                        .font(.body.bold())
-                        .foregroundStyle(.primary)
-                }
-                Spacer()
-                BannerAdView(sizeType: .AdSizeLargeBanner)
+                BannerAdView(sizeType: .AdSizeBanner)
                     .mask {
                         RoundedRectangle(cornerRadius: 10)
                     }
                     .frame(width: geomentry.size.width)
-                
             }
-            .listRowSeparator(.hidden)
-        }.frame(height: 160)
+        }.frame(height: 40)
     }
     
     var buttons: some View {
@@ -103,80 +93,69 @@ struct ContentView: View {
                 Spacer()
             } else {
                 if usedGifticons.count > 0  && gifticons.count > 0 {
-                    navigationTab
-                    List {
-                        switch tabIdx {
-                        case 0:
-                            Section("Gifticon") {
-                                GifticonListView()
-                            }
-                        case 1:
-                            UsedGifticonListView()
-                        default:
-                            EmptyView()
-                        }
-                        adView
+                    switch tabIdx {
+                    case 0:
+                        GifticonListView()
+                    case 1:
+                        UsedGifticonListView()
+                    default:
+                        EmptyView()
                     }
                 }
                 else if gifticons.count > 0 {
-                    List {
-                        GifticonListView()
-                    }
+                    GifticonListView()
                 }
                 else if usedGifticons.count > 0 {
-                    List {
-                        UsedGifticonListView()
-                    }
+                    UsedGifticonListView()
+                    
                 }
             }
-            Spacer()
+            adView
         }
     }
     
     var navigationTab : some View {
-        TabNavigationView(items: [
-            .init(id: 0, title: .init("Gifticon")),
-            .init(id: 1, title: .init("Used"))
-        ], selection: $tabIdx)
+        TabNavigationView(items: [.init("Gifticon") ,.init("Used")], selection: $tabIdx)
     }
     
     var mainView: some View {
-        GeometryReader { proxy in
-            NavigationStack {
-                if !isLandscape {
-                    ZStack {
-                        listView
-                        VStack {
-                            Spacer()
-                            buttons
-                        }
+        NavigationStack {
+            if !isLandscape {
+                if usedGifticons.count > 0  && gifticons.count > 0 {
+                    navigationTab
+                }
+
+                ZStack {
+                    listView
+                    
+                    VStack {
+                        Spacer()
+                        buttons
                     }
                 }
-                else {
+            }
+            else {
+                ZStack {
                     HStack {
                         if gifticons.count == 0 {
                             HomePlaceHolderView()
                             Spacer()
-                        }
-                        List {
-                            Section("Gifticon") {
-                                GifticonListView()
-                            }
-                        }
-                        ZStack {
-                            List {
+                        } else {
+                            GifticonListView()
+                            VStack {
                                 UsedGifticonListView()
                                 adView
                             }
-                            VStack {
-                                Spacer()
-                                buttons
-                            }
                         }
-                        
+                    }
+                    
+                    VStack {
+                        Spacer()
+                        buttons
                     }
                 }
                 
+
             }
         }
 
@@ -243,7 +222,12 @@ struct ContentView: View {
         .alert(isPresented: $isAlert) {
             return .init(title: .init("alert"), message: .init(error?.localizedDescription ?? ""))
         }
-        
+        .onReceive(
+            NotificationCenter.default.publisher(for: .didChangeUsedGifticon)) { output in
+                if let isUsed = output.object as? Bool {
+                    tabIdx = isUsed ? 1 : 0
+                }
+            }
         
     }
     

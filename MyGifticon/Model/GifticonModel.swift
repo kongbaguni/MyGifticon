@@ -9,6 +9,9 @@ import SwiftUI
 import SwiftData
 import KongUIKit
 import CoreLocation
+extension Notification.Name {
+    static let didChangeUsedGifticon: Notification.Name = .init("didChangeUsedGifticon")
+}
 
 fileprivate extension String {
     var dateValue:Date? {
