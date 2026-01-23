@@ -19,7 +19,7 @@ struct UserNotificationManager {
     }
     
     static func scheduleExpireNotification(model: GifticonModel) {
-        for idx in 1...3 {
+        for idx in 0...3 {
             scheduleExpireNotification(model: model, daysBefore: idx)
         }
     }
@@ -54,8 +54,23 @@ struct UserNotificationManager {
         }
 
         let content = UNMutableNotificationContent()
-        content.title = "기프트콘 만료 알림"
-        content.body = "\(model.memo) 기프트콘이 \(daysBefore)일 후 만료됩니다."
+        content.title = NSLocalizedString("Gifticon Expire Alert", comment: "gifticon notitication")
+        switch daysBefore {
+        case 0:
+            content.body = model.memo + " " +
+            NSLocalizedString(
+                "The Gifticon is Expire Today",
+                comment: "gifticion notification"
+            )
+        default:
+            content.body = model.memo + " " +
+            String(format:
+                    NSLocalizedString(
+                        "The Gifticon expires in %d days",
+                        comment: "gifticion notification"
+                    ), daysBefore)
+
+        }
         content.sound = .default
 
         let trigger = UNCalendarNotificationTrigger(
