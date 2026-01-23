@@ -17,6 +17,16 @@ struct GifticonListView: View {
         sort: [SortDescriptor(\.limitDateYMD, order: .reverse)]
     )
     private var list: [GifticonModel]
+
+    @Query(
+        filter: #Predicate<GifticonModel> { $0.used == true },
+        sort: [SortDescriptor(\.limitDateYMD, order: .reverse)]
+    )
+    private var usedlist: [GifticonModel]
+
+    var isNeedTab:Bool {
+        list.count > 0 && usedlist.count > 0
+    }
     
     var filteredList: [GifticonModel] {
         guard let tag = selectedTag else { return list }
@@ -80,6 +90,7 @@ struct GifticonListView: View {
                 version
             }
         }
+        .contentMargins(.top, isNeedTab ? 80 : 0)
         .onAppear {
             if selectedTagRaw > -1 {
                 self.selectedTag = GifticonModel.tags[selectedTagRaw]

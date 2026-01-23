@@ -34,6 +34,9 @@ struct TabNavigationView : View {
                 Capsule()
                     .fill(isSelected ? Color.accentColor.opacity(0.15) : Color.clear)
             )
+            .safeGlassEffect(useInteractive: true, inShape:
+                                Capsule()
+            )
     }
 }
 

@@ -21,6 +21,22 @@ struct UsedGifticonListView: View {
     )
     
     private var list: [GifticonModel]
+    
+   
+    @Query(
+        filter: #Predicate<GifticonModel> {
+            $0.used == false
+        },
+        sort: \GifticonModel.limitDateYMD,
+        order: .reverse
+    )
+    
+    private var unUsedlist: [GifticonModel]
+    
+    var isNeedTab : Bool {
+        list.isEmpty == false || unUsedlist.isEmpty == false
+    }
+    
     @State var confirmDelete: Bool = false
     
     var locationItem : [MapViewWithMultipleLocationInfo.Info] {
@@ -68,6 +84,7 @@ struct UsedGifticonListView: View {
                 }
             }
         }
+        .contentMargins(.top, isNeedTab ? 80 : 0)
         .alert(isPresented: $confirmDelete) {
             .init(title: .init("clear used title"),
                   message: .init("clear used message"),

@@ -121,17 +121,33 @@ struct ContentView: View {
     var mainView: some View {
         NavigationStack {
             if !isLandscape {
-                if usedGifticons.count > 0  && gifticons.count > 0 {
-                    navigationTab
-                }
 
                 ZStack {
                     listView
+                        .toolbar(.hidden, for: .navigationBar)
                     
                     VStack {
                         Spacer()
                         buttons
                     }
+                    
+                    if usedGifticons.count > 0  && gifticons.count > 0 {
+                        VStack {
+                            navigationTab
+                                .frame(height: 50)
+                                .padding(10)
+                                .background{
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .fill(.background.opacity(0.5))
+                                }
+                                .safeGlassEffect(
+                                    inShape: RoundedRectangle(cornerRadius: 25)
+                                )
+                            Spacer()
+                        }
+                        
+                    }
+
                 }
             }
             else {
