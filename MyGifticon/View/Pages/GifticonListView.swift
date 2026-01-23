@@ -77,6 +77,12 @@ struct GifticonListView: View {
             } else {
                 self.selectedTag = nil
             }
+            UserNotificationManager.requestNotificationPermission {granted, error in
+                for item in list {
+                    UserNotificationManager
+                        .scheduleExpireNotification(model: item, daysBefore: 3)
+                }
+            }
         }
         .onChange(of: selectedTag, {
             selectedTagRaw = selectedTag?.id ?? -1
