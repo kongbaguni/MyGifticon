@@ -31,12 +31,8 @@ fileprivate extension String {
 
 
 struct GifticonView : View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Environment(\.verticalSizeClass) var verticalSizeClass
     let locationManager = LocationManager()
-    var isLandscape: Bool {
-        horizontalSizeClass == .regular && verticalSizeClass == .compact
-    }
+    
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -147,64 +143,57 @@ struct GifticonView : View {
     }
     
     var buttonView : some View {
-        HStack {
-            Spacer()
-            if isNew {
-                KImageButton(
-                    image: .init(systemName: "plus"),
-                    title: .init("save"),
-                    style: .simple) {
-                        do {
-                            try modelContext.insertIfNotExists(model: model)
-                            try modelContext.save()
-                        } catch {
-                            self.error = error
-                            Log
-                                .debug(
-                                    "Failed to save model",
-                                    error.localizedDescription
-                                )
-                            return
-                        }
-                        dismiss()
-                    }
-            }
-            else if isUsed {
-                if let dt = model.usedDateTime {
-                    let str = dt
-                        .formatted(
-                            date: .numeric,
-                            time: .standard
-                        )
-                    Text(
-                        String(format: NSLocalizedString("used date time : %@", comment: "used label"), str)
-                    )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    Spacer()
-                }
-                KImageButton(
-                    image: .init(systemName: "arrow.uturn.backward.circle"),
-                    title: .init("restore"),
-                    style: .simple) {
-                        willRestore = true
-                        dismiss()
-                    }
-            }
-            else {
-                KImageButton(
-                    image: .init(systemName: "checkmark.shield"),
-                    title: .init("use"),
-                    style: .simple) {
-                        locationManager.getLocation { location in
-                            self.location = location
-                            self.willUsed = true
+        DirectionReader { isLandScape in
+            HStack {
+                Spacer()
+                if isNew {
+                    KImageButton(
+                        image: .init(systemName: "plus"),
+                        title: .init("save"),
+                        style: .simple) {
+                            do {
+                                try modelContext.insertIfNotExists(model: model)
+                                try modelContext.save()
+                            } catch {
+                                self.error = error
+                                Log
+                                    .debug(
+                                        "Failed to save model",
+                                        error.localizedDescription
+                                    )
+                                return
+                            }
                             dismiss()
                         }
+                }
+                else if isUsed {
+                    if !isLandScape {
+                        usedTime
+                        Spacer()
                     }
+                    KImageButton(
+                        image: .init(systemName: "arrow.uturn.backward.circle"),
+                        title: .init("restore"),
+                        style: .simple) {
+                            willRestore = true
+                            dismiss()
+                        }
+                }
+                else {
+                    KImageButton(
+                        image: .init(systemName: "checkmark.shield"),
+                        title: .init("use"),
+                        style: .simple) {
+                            locationManager.getLocation { location in
+                                self.location = location
+                                self.willUsed = true
+                                dismiss()
+                            }
+                        }
+                }
             }
+            .frame(height: 90)
         }
-        .frame(height: 90)
     }
     
     var mapView : some View {
@@ -219,43 +208,62 @@ struct GifticonView : View {
             }
         }
     }
+    
+    var usedTime : some View {
+        Group {
+            if let dt = model.usedDateTime {
+                let str = dt
+                    .formatted(
+                        date: .numeric,
+                        time: .standard
+                    )
+                Text(
+                    String(format: NSLocalizedString("used date time : %@", comment: "used label"), str)
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
+        }
+    }
     var body: some View {
         GeometryReader { proxy in
-            if !isLandscape {
-                
-                VStack (alignment: .leading) {
-                    barcodeView(width: proxy.size.width)
-                        .frame(minHeight: 150)
+            DirectionReader { isLandscape in
+                if !isLandscape {
                     
-                    brandImageView
-                    
-                    urlView
-                    inputView
-                    
-                    infoView
-                    mapView
-                    Spacer()
-                    buttonView
-                }
-            } else {
-                HStack {
-                    VStack {
+                    VStack (alignment: .leading) {
+                        barcodeView(width: proxy.size.width)
+                            .frame(minHeight: 150)
+                        
                         brandImageView
-                            .padding()
-                        Spacer()
-                    }.frame(width: 100)
-
-                    ScrollView {
-                        barcodeView(width: proxy.size.width - 200)
-                        inputView
+                        
                         urlView
-                    }
-                    
-                    VStack {
+                        inputView
+                        
+                        infoView
+                        mapView
                         Spacer()
                         buttonView
-                    }.frame(width: 80)
-
+                    }
+                } else {
+                    HStack {
+                        VStack {
+                            brandImageView
+                                .padding()
+                            Spacer()
+                        }.frame(width: 100)
+                        
+                        ScrollView {
+                            barcodeView(width: proxy.size.width - 200)
+                            inputView
+                            urlView
+                        }
+                        
+                        VStack {
+                            Spacer()
+                            buttonView
+                        }.frame(width: 80)
+                        
+                    }
                 }
             }
         }
