@@ -19,7 +19,7 @@ struct UserNotificationManager {
         }
     }
     
-    static func checkPendingNotifications() {
+    fileprivate static func checkPendingNotifications() {
 #if DEBUG
         UNUserNotificationCenter.current()
             .getPendingNotificationRequests { requests in
@@ -39,14 +39,34 @@ struct UserNotificationManager {
 #endif
     }
     
+    fileprivate static func isRegisteredForRemoteNotifications(model: GifticonModel, complete:@escaping(Bool)->Void){
+#if DEBUG
+        complete(false)
+#else
+        let barcode = model.barcode
+        UNUserNotificationCenter.current()
+            .getPendingNotificationRequests { requests in
+                let identifiers = requests
+                    .filter { $0.identifier.contains("gifticon_\(barcode)_") }
+                    .map { $0.identifier }
+                complete(identifiers.count > 0)
+            }
+        
+#endif
+    }
+    
+    
     static func scheduleExpireNotification(model: GifticonModel) {
         UserNotificationManager.requestNotificationPermission { granted, error in
             if granted {
-                for idx in 1...3 {
-                    scheduleExpireNotification(model: model, daysBefore: idx)
+                isRegisteredForRemoteNotifications(model: model) { isRegistered in
+                    if !isRegistered {
+                        for idx in 1...3 {
+                            scheduleExpireNotification(model: model, daysBefore: idx)
+                        }
+                        checkPendingNotifications()
+                    }
                 }
-                
-                checkPendingNotifications()
             }
         }
     }
