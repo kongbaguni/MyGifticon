@@ -54,6 +54,8 @@ struct GifticonView : View {
     @State var isAlert:Bool = false
     @State var location:CLLocation? = nil
     
+    @State var isScheduledNotify:Bool = false
+    
     func barcodeView(width: CGFloat)-> some View {
         VStack(alignment: .center) {
             KBarcodeView(text: model.barcode, conerRadius: 20)
@@ -142,6 +144,12 @@ struct GifticonView : View {
         }
     }
     
+    var toggleScheduleSwitch : some View {
+        Toggle(isOn: $isScheduledNotify) {
+            Text("notify expired")
+        }
+    }
+    
     var buttonView : some View {
         DirectionReader { isLandScape in
             HStack {
@@ -154,6 +162,7 @@ struct GifticonView : View {
                             do {
                                 try modelContext.insertIfNotExists(model: model)
                                 try modelContext.save()
+                                UserNotificationManager.scheduleExpireNotification(for: model)
                             } catch {
                                 self.error = error
                                 Log
@@ -238,8 +247,9 @@ struct GifticonView : View {
                         
                         urlView
                         inputView
-                        
                         infoView
+                        
+                        toggleScheduleSwitch.disabled(model.used)
                         mapView
                         Spacer()
                         buttonView
@@ -252,11 +262,7 @@ struct GifticonView : View {
                             Spacer()
                         }.frame(width: 100)
                         
-                        ScrollView {
-                            barcodeView(width: proxy.size.width - 200)
-                            inputView
-                            urlView
-                        }
+                        barcodeView(width: proxy.size.width - 200)
                         
                         VStack {
                             Spacer()
@@ -277,6 +283,9 @@ struct GifticonView : View {
         .onAppear {
             memo = model.memo
             tagItem = model.tagItem
+            UserNotificationManager.isRegisteredForRemoteNotifications(model: model) { isReg in
+                isScheduledNotify = isReg
+            }
         }
         .onDisappear {
             do {
@@ -285,6 +294,7 @@ struct GifticonView : View {
                 if isUsed {
                     model.used = willRestore ? false : true
                 }
+                
                 else if willUsed {
                     model.used = true
                     if let location = self.location {
@@ -295,11 +305,11 @@ struct GifticonView : View {
                     model.usedDateTime = .now
                 }
                 try modelContext.save()
-                
-                if model.used == false {
+                if model.used {
                     UserNotificationManager.removeScheduledNotifications(for: model)
-                } else {
-                    UserNotificationManager.scheduleExpireNotification(model: model)
+                }
+                else if isUsed == true && willUsed == false {
+                    UserNotificationManager.scheduleExpireNotification(for: model)
                 }
                 NotificationCenter.default
                     .post(name: .didChangeUsedGifticon, object: model.used)
@@ -309,6 +319,13 @@ struct GifticonView : View {
         }
         .alert(isPresented: $isAlert) {
             return .init(title: .init("alert"), message: .init(error?.localizedDescription ?? ""))
+        }
+        .onChange(of: isScheduledNotify) { oldValue, newValue in
+            if newValue {
+                UserNotificationManager.scheduleExpireNotification(for: model)
+            } else {
+                UserNotificationManager.removeScheduledNotifications(for: model)
+            }
         }
 
     }
