@@ -80,7 +80,7 @@ struct GifticonListView: View {
             UserNotificationManager.requestNotificationPermission {granted, error in
                 for item in list {
                     UserNotificationManager
-                        .scheduleExpireNotification(model: item, daysBefore: 3)
+                        .scheduleExpireNotification(model: item)
                 }
             }
         }

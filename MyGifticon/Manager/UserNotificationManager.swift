@@ -18,7 +18,13 @@ struct UserNotificationManager {
         }
     }
     
-    static func scheduleExpireNotification(model: GifticonModel, daysBefore: Int) {
+    static func scheduleExpireNotification(model: GifticonModel) {
+        for idx in 1...3 {
+            scheduleExpireNotification(model: model, daysBefore: idx)
+        }
+    }
+    
+    fileprivate static func scheduleExpireNotification(model: GifticonModel, daysBefore: Int) {
         guard let limitDate = model.limitDate,
               let baseDate = Calendar.current.date(
                   byAdding: .day,
@@ -66,5 +72,21 @@ struct UserNotificationManager {
         )
 
         UNUserNotificationCenter.current().add(request)
+    }
+    
+    static func removeScheduledNotifications(for model: GifticonModel) {
+        let barcode = model.barcode
+
+        UNUserNotificationCenter.current()
+            .getPendingNotificationRequests { requests in
+                let identifiers = requests
+                    .filter { $0.identifier.contains("gifticon_\(barcode)_") }
+                    .map { $0.identifier }
+
+                if !identifiers.isEmpty {
+                    UNUserNotificationCenter.current()
+                        .removePendingNotificationRequests(withIdentifiers: identifiers)
+                }
+            }
     }
 }

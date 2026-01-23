@@ -295,6 +295,12 @@ struct GifticonView : View {
                     model.usedDateTime = .now
                 }
                 try modelContext.save()
+                
+                if model.used == false {
+                    UserNotificationManager.removeScheduledNotifications(for: model)
+                } else {
+                    UserNotificationManager.scheduleExpireNotification(model: model)
+                }
                 NotificationCenter.default
                     .post(name: .didChangeUsedGifticon, object: model.used)
             } catch {
