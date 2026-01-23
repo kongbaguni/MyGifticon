@@ -37,7 +37,7 @@ struct GifticonListView: View {
     
     @AppStorage("selectedTag") private var selectedTagRaw: Int = -1
     
-    var listView: some View {
+    var items: some View {
         ForEach(filteredList, id: \.self) { model in
             NavigationLink {
                 GifticonView(model: model, isNew: false, isUsed: false)
@@ -45,26 +45,8 @@ struct GifticonListView: View {
                 GifticonListRowView(model: model)
             }
         }
-//        .onDelete { indexset in
-//            for index in indexset {
-//                let item = filteredList[index]
-//                item.used = true
-//                item.usedDateTime = .now
-//            }
-//            do {
-//                try self.modelContext.save()
-//            } catch {                
-//                fatalError(error.localizedDescription)
-//            }
-//        }
     }
-    
-//    var iconTestListView: some View {
-//        ForEach(Consts.brands, id: \.self) { brand in
-//            GifticonListRowView(model: .init(title: brand, barcode: "1231231234", limitDate: "2027.12.31", image: .init()))
-//        }
-//    }
-    
+        
     var version : some View {
         HStack {
             Text("version")
@@ -75,22 +57,20 @@ struct GifticonListView: View {
                 .foregroundStyle(.primary)
         }
     }
-    
-    var body: some View {
+    var listView : some View {
         List {
             Section {
                 KSelectView(items: GifticonModel.tags, canCancel: true, selected: $selectedTag)
                 if selectedTag != nil && filteredList.isEmpty {
                     Text("empty list msg when tag is selected")
                 }
-                listView
+                items
             }
             
             Section {
                 version
             }
         }
-        .contentMargins(.top, isNeedTab ? 80 : 0)
         .onAppear {
             if selectedTagRaw > -1 {
                 self.selectedTag = GifticonModel.tags[selectedTagRaw]
@@ -101,6 +81,15 @@ struct GifticonListView: View {
         .onChange(of: selectedTag, {
             selectedTagRaw = selectedTag?.id ?? -1
         })
+    }
+    
+    var body: some View {
+        DirectionReader { isLandscape in
+            listView
+                .contentMargins(.top, (!isLandscape && isNeedTab) ? 80 : 0)
+            
+        }
+       
     }
 }
 

@@ -19,7 +19,6 @@ struct UsedGifticonListView: View {
         sort: \GifticonModel.limitDateYMD,
         order: .reverse
     )
-    
     private var list: [GifticonModel]
     
    
@@ -30,8 +29,8 @@ struct UsedGifticonListView: View {
         sort: \GifticonModel.limitDateYMD,
         order: .reverse
     )
-    
     private var unUsedlist: [GifticonModel]
+    
     
     var isNeedTab : Bool {
         list.isEmpty == false || unUsedlist.isEmpty == false
@@ -52,7 +51,7 @@ struct UsedGifticonListView: View {
             .frame(height: 500)
     }
     
-    var body: some View {
+    var listView: some View {
         List {
             Section {
                 ForEach(list) { model in
@@ -84,7 +83,6 @@ struct UsedGifticonListView: View {
                 }
             }
         }
-        .contentMargins(.top, isNeedTab ? 80 : 0)
         .alert(isPresented: $confirmDelete) {
             .init(title: .init("clear used title"),
                   message: .init("clear used message"),
@@ -97,6 +95,12 @@ struct UsedGifticonListView: View {
                 }
 
             }))
+        }
+    }
+    var body: some View {
+        DirectionReader { isLandscape in
+            listView
+                .contentMargins(.top, (isNeedTab && !isLandscape) ? 80 : 0)
         }
     }
 }

@@ -20,13 +20,6 @@ fileprivate let style:KImageLabel.Style = .init(
 
 struct ContentView: View {
     
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    
-    var isLandscape: Bool {
-        horizontalSizeClass == .regular && verticalSizeClass == .compact
-    }
-    
     
     @Query(
         filter: #Predicate<GifticonModel> {
@@ -120,58 +113,58 @@ struct ContentView: View {
     
     var mainView: some View {
         NavigationStack {
-            if !isLandscape {
-
-                ZStack {
-                    listView
-                        .toolbar(.hidden, for: .navigationBar)
-                    
-                    VStack {
-                        Spacer()
-                        buttons
-                    }
-                    
-                    if usedGifticons.count > 0  && gifticons.count > 0 {
+            DirectionReader { isLandscape in
+                if !isLandscape {
+                    ZStack {
+                        listView
+                            .toolbar(.hidden, for: .navigationBar)
+                        
                         VStack {
-                            navigationTab
-                                .frame(height: 50)
-                                .padding(10)
-                                .background{
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .fill(.background.opacity(0.5))
-                                }
-                                .safeGlassEffect(
-                                    inShape: RoundedRectangle(cornerRadius: 25)
-                                )
                             Spacer()
+                            buttons
+                        }
+                        
+                        if usedGifticons.count > 0  && gifticons.count > 0 {
+                            VStack {
+                                navigationTab
+                                    .frame(height: 50)
+                                    .padding(10)
+                                    .background{
+                                        RoundedRectangle(cornerRadius: 25)
+                                            .fill(.background.opacity(0.5))
+                                    }
+                                    .safeGlassEffect(
+                                        inShape: RoundedRectangle(cornerRadius: 25)
+                                    )
+                                Spacer()
+                            }
+                            
                         }
                         
                     }
-
                 }
-            }
-            else {
-                ZStack {
-                    HStack {
-                        if gifticons.count == 0 {
-                            HomePlaceHolderView()
-                            Spacer()
-                        } else {
-                            GifticonListView()
-                            VStack {
-                                UsedGifticonListView()
-                                adView
+                else {
+                    ZStack {
+                        HStack {
+                            if gifticons.count == 0 {
+                                HomePlaceHolderView()
+                                Spacer()
+                            } else {
+                                GifticonListView()
+                                VStack {
+                                    UsedGifticonListView()
+                                    adView
+                                }
                             }
+                        }
+                        
+                        VStack {
+                            Spacer()
+                            buttons
                         }
                     }
                     
-                    VStack {
-                        Spacer()
-                        buttons
-                    }
                 }
-                
-
             }
         }
 
