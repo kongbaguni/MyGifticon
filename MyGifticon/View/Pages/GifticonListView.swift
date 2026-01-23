@@ -87,7 +87,7 @@ struct GifticonListView: View {
         DirectionReader { isLandscape in
             listView
                 .contentMargins(.top, (!isLandscape && isNeedTab) ? 80 : 0)
-            
+                .contentMargins(.bottom, 50)
         }
        
     }

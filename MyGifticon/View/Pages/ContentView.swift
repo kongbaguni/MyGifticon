@@ -103,7 +103,6 @@ struct ContentView: View {
                     
                 }
             }
-            adView
         }
     }
     
@@ -146,14 +145,15 @@ struct ContentView: View {
                 else {
                     ZStack {
                         HStack {
-                            if gifticons.count == 0 {
+                            if gifticons.count == 0 && usedGifticons.count == 0 {
                                 HomePlaceHolderView()
                                 Spacer()
                             } else {
-                                GifticonListView()
-                                VStack {
+                                if gifticons.count > 0 {
+                                    GifticonListView()
+                                }
+                                if usedGifticons.count > 0 {
                                     UsedGifticonListView()
-                                    adView
                                 }
                             }
                         }
@@ -183,6 +183,10 @@ struct ContentView: View {
                 )
             }
             mainView
+            VStack {
+                Spacer()
+                adView
+            }
         }
         .navigationTitle(Text("MyGifticon"))
         .navigationBarTitleDisplayMode(.inline)
