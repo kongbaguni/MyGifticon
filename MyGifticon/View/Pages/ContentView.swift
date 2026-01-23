@@ -81,7 +81,7 @@ struct ContentView: View {
     
     var listView : some View {
         VStack {
-            if gifticons.count == 0 {
+            if gifticons.count == 0 && usedGifticons.count == 0 {
                 HomePlaceHolderView()
                 Spacer()
             } else {
