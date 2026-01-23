@@ -12,59 +12,21 @@ enum AppMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
         [AppSchemaV1.self, AppSchemaV2.self, AppSchemaV3.self, AppSchemaV4.self]
     }
-
+    
     static var stages: [MigrationStage] {
         [
-            .custom(
+            .lightweight(
                 fromVersion: AppSchemaV1.self,
-                toVersion: AppSchemaV2.self,
-                willMigrate: { context in
-                    let oldArticles = try context.fetch(
-                        FetchDescriptor<AppSchemaV1.GifticonModel>()
-                    )
-
-                    for old in oldArticles {
-                        let new = AppSchemaV2.GifticonModel(
-                            title: old.title,
-                            memo: old.memo,
-                            barcode: old.barcode,
-                            limitDateYMD: old.limitDateYMD,
-                            imageData: old.imageData,
-                            createdAt: old.createdAt,
-                            used: old.deleted,
-                            tag: old.tag,
-                            urlString: old.urlString
-                        )
-                        context.insert(new)
-                        context.delete(old)
-                    }
-                },
-                didMigrate: { context in
-
-                }
+                toVersion: AppSchemaV2.self
             ),
-            
-            .custom(
+            .lightweight(
                 fromVersion: AppSchemaV2.self,
-                toVersion: AppSchemaV3.self,
-                willMigrate: { context in
-                    
-                },
-                didMigrate: { context in
-                    
-                }
+                toVersion: AppSchemaV3.self
             ),
-            
-            .custom(
+            .lightweight(
                 fromVersion: AppSchemaV3.self,
-                toVersion: AppSchemaV4.self,
-                willMigrate: { context in
-                    
-                },
-                didMigrate: { context in
-                    
-                }
-            ),
+                toVersion: AppSchemaV4.self
+            )
             
         ]
     }

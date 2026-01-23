@@ -108,7 +108,7 @@ final class GifticonModel {
     var imageData: Data = Data()
     /** 저장일시 */
     var createdAt: Date = Date.now
-    /** 사용 처리 */
+    /** 사용 처리 */    
     var used: Bool = false
     /** 사용 완료 시각 */
     var usedDateTime : Date? = nil
