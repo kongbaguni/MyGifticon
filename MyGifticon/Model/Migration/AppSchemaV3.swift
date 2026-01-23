@@ -29,9 +29,9 @@ enum AppSchemaV3 : VersionedSchema {
         /** 저장일시 */
         var createdAt: Date
         /** 사용 처리 */
-        var used: Bool
+        var used: Bool 
         /** 사용처리 한 날자 */
-        var usedDateTime : Date?
+        var usedDateTime : Date? // 추가됨 
         /** 컬러 테그 */
         var tag: Int
         /** 참조 URL  */

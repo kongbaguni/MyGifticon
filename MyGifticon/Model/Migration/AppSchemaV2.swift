@@ -29,7 +29,7 @@ enum AppSchemaV2 : VersionedSchema {
         /** 저장일시 */
         var createdAt: Date
         /** 사용 처리 */
-        var used: Bool
+        var used: Bool // rename deleted -> used
         /** 컬러 테그 */
         var tag: Int
         /** 참조 URL  */

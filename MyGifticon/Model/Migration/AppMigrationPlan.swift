@@ -39,9 +39,10 @@ enum AppMigrationPlan: SchemaMigrationPlan {
                     }
                 },
                 didMigrate: { context in
-                    // 필요 시 정리 작업
+
                 }
             ),
+            
             .custom(
                 fromVersion: AppSchemaV2.self,
                 toVersion: AppSchemaV3.self,
@@ -52,6 +53,7 @@ enum AppMigrationPlan: SchemaMigrationPlan {
                     
                 }
             ),
+            
             .custom(
                 fromVersion: AppSchemaV3.self,
                 toVersion: AppSchemaV4.self,

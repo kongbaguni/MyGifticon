@@ -38,11 +38,11 @@ enum AppSchemaV4 : VersionedSchema {
         var urlString: String
         
         /** 사용 완료 위치 위도 */
-        var used_latitude : Double
+        var used_latitude : Double // 추가됨
         /** 사용 완료 위치 경도 */
-        var used_longitude : Double
+        var used_longitude : Double // 추가됨
         /** 위지청보 가지고 있나? */
-        var hasLocation: Bool
+        var hasLocation: Bool // 추가됨 
         init(
             title: String,
             memo: String,
