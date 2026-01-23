@@ -108,6 +108,15 @@ struct ContentView: View {
     
     var navigationTab : some View {
         TabNavigationView(items: [.init("Gifticon") ,.init("Used")], selection: $tabIdx)
+            .frame(height: 50)
+            .padding(10)
+            .background{
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(.background.opacity(0.5))
+            }
+            .safeGlassEffect(
+                inShape: RoundedRectangle(cornerRadius: 25)
+            )
     }
     
     var mainView: some View {
@@ -126,18 +135,8 @@ struct ContentView: View {
                         if usedGifticons.count > 0  && gifticons.count > 0 {
                             VStack {
                                 navigationTab
-                                    .frame(height: 50)
-                                    .padding(10)
-                                    .background{
-                                        RoundedRectangle(cornerRadius: 25)
-                                            .fill(.background.opacity(0.5))
-                                    }
-                                    .safeGlassEffect(
-                                        inShape: RoundedRectangle(cornerRadius: 25)
-                                    )
                                 Spacer()
                             }
-                            
                         }
                         
                     }
