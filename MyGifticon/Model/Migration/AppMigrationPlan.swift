@@ -36,6 +36,7 @@ enum AppMigrationPlan: SchemaMigrationPlan {
                             urlString: old.urlString
                         )
                         context.insert(new)
+                        context.delete(old)
                     }
                 },
                 didMigrate: { context in
@@ -64,6 +65,7 @@ enum AppMigrationPlan: SchemaMigrationPlan {
                     
                 }
             ),
+            
         ]
     }
 }
