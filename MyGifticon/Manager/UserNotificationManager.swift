@@ -6,9 +6,10 @@
 //
 
 import UserNotifications
+import jkdsUtility
 
 struct UserNotificationManager {
-    static func requestNotificationPermission(complete:@escaping(Bool, Error?)->Void) {
+    fileprivate static func requestNotificationPermission(complete:@escaping(Bool, Error?)->Void) {
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.alert, .badge, .sound]
         ) { granted, error in
@@ -18,9 +19,35 @@ struct UserNotificationManager {
         }
     }
     
+    static func checkPendingNotifications() {
+#if DEBUG
+        UNUserNotificationCenter.current()
+            .getPendingNotificationRequests { requests in
+                print("📬 Pending notifications count:", requests.count)
+
+                for req in requests {
+                    print(
+                    """
+                    notification 등록
+                    🔔 id: \(req.identifier)
+                    ⏰ trigger: \(String(describing: req.trigger))
+                    📄 title: \(req.content.title)
+                    📝 body: \(req.content.body)
+                    """)
+                }
+            }
+#endif
+    }
+    
     static func scheduleExpireNotification(model: GifticonModel) {
-        for idx in 0...3 {
-            scheduleExpireNotification(model: model, daysBefore: idx)
+        UserNotificationManager.requestNotificationPermission { granted, error in
+            if granted {
+                for idx in 1...3 {
+                    scheduleExpireNotification(model: model, daysBefore: idx)
+                }
+                
+                checkPendingNotifications()
+            }
         }
     }
     
@@ -45,6 +72,10 @@ struct UserNotificationManager {
         components.hour = 12
         components.minute = 0
         components.second = 0
+#if DEBUG
+        components.hour = Calendar.current.component(.hour, from: Date())
+        components.minute = Calendar.current.component(.minute, from: Date()) + 1
+#endif
 
         // 과거 방지
         guard let triggerDate = Calendar.current.date(from: components),
@@ -56,14 +87,15 @@ struct UserNotificationManager {
         let content = UNMutableNotificationContent()
         content.title = NSLocalizedString("Gifticon Expire Alert", comment: "gifticon notitication")
         switch daysBefore {
-        case 0:
-            content.body = model.memo + " " +
+        case 1:
+            content.body = model.memo
+                .trimmingCharacters(in: .whitespacesAndNewlines) + " " +
             NSLocalizedString(
                 "The Gifticon is Expire Today",
                 comment: "gifticion notification"
             )
         default:
-            content.body = model.memo + " " +
+            content.body = model.memo.trimmingCharacters(in: .whitespacesAndNewlines) + " " +
             String(format:
                     NSLocalizedString(
                         "The Gifticon expires in %d days",
@@ -87,6 +119,15 @@ struct UserNotificationManager {
         )
 
         UNUserNotificationCenter.current().add(request)
+     
+        Log
+            .debug(
+                "notification 등록",
+                model.memo,
+                model.limitDateYMD,
+                daysBefore,
+                triggerDate
+            )
     }
     
     static func removeScheduledNotifications(for model: GifticonModel) {
