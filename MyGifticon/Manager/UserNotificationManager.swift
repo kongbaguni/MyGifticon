@@ -39,10 +39,7 @@ struct UserNotificationManager {
 #endif
     }
     
-    fileprivate static func isRegisteredForRemoteNotifications(model: GifticonModel, complete:@escaping(Bool)->Void){
-#if DEBUG
-        complete(false)
-#else
+    static func isRegisteredForRemoteNotifications(model: GifticonModel, complete:@escaping(Bool)->Void){
         let barcode = model.barcode
         UNUserNotificationCenter.current()
             .getPendingNotificationRequests { requests in
@@ -52,17 +49,16 @@ struct UserNotificationManager {
                 complete(identifiers.count > 0)
             }
         
-#endif
     }
     
     
-    static func scheduleExpireNotification(model: GifticonModel) {
+    static func scheduleExpireNotification(for model: GifticonModel) {
         UserNotificationManager.requestNotificationPermission { granted, error in
             if granted {
                 isRegisteredForRemoteNotifications(model: model) { isRegistered in
                     if !isRegistered {
                         for idx in 1...3 {
-                            scheduleExpireNotification(model: model, daysBefore: idx)
+                            scheduleExpireNotification(for: model, daysBefore: idx)
                         }
                         checkPendingNotifications()
                     }
@@ -71,7 +67,7 @@ struct UserNotificationManager {
         }
     }
     
-    fileprivate static func scheduleExpireNotification(model: GifticonModel, daysBefore: Int) {
+    fileprivate static func scheduleExpireNotification(for model: GifticonModel, daysBefore: Int) {
         guard let limitDate = model.limitDate,
               let baseDate = Calendar.current.date(
                   byAdding: .day,
